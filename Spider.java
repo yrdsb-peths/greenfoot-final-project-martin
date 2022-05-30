@@ -18,6 +18,9 @@ public class Spider extends Actor {
 	private int animIndex;
 	private SimpleTimer animTimer;
 
+	/**
+	 * Create a new spider.
+	 */
 	public Spider() {
 		// Load images into image arrays
 		for (int i = 0; i < imagesIdle.length; i++) {
@@ -63,6 +66,7 @@ public class Spider extends Actor {
 	 */
 	private void updateAnimation() {
 		if (animTimer.millisElapsed() > ANIM_DELAY) {
+			// Advance animation frame
 			animIndex = (animIndex + 1) % animFrames.length;
 			setAnimFrame();
 			animTimer.mark();
@@ -72,8 +76,12 @@ public class Spider extends Actor {
 		}
 	}
 
+	/**
+	 * Set this spider's image according to its current animation frame and direction.
+	 */
 	private void setAnimFrame() {
 		GreenfootImage image = animFrames[animIndex];
+		// Mirror the image if facing right (all images originally face left)
 		if (isFacingRight) {
 			image = new GreenfootImage(image);
 			image.mirrorHorizontally();

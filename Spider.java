@@ -8,9 +8,23 @@ import greenfoot.*;
  */
 public class Spider extends Actor {
 	private static final int SPEED = 2;
+	private static final int ANIM_DELAY = 250;
+
+	private static GreenfootImage[] imagesIdle = new GreenfootImage[2];
+	private GreenfootImage[] animFrames;
+	private int animIndex;
+	private SimpleTimer animTimer;
 
 	public Spider() {
-		setImage(new GreenfootImage("images/spider-idle-0.png"));
+		// Load images into image arrays
+		for (int i = 0; i < imagesIdle.length; i++) {
+			imagesIdle[i] = new GreenfootImage("images/spider-idle-" + i + ".png");
+		}
+		// Initialize animation
+		animFrames = imagesIdle;
+		animIndex = 0;
+		animTimer = new SimpleTimer();
+		setImage(animFrames[animIndex]);
 	}
 
 	/**
@@ -35,9 +49,21 @@ public class Spider extends Actor {
 	}
 
 	/**
+	 * Advance this spider's animation and update its image.
+	 */
+	private void updateAnimation() {
+		if (animTimer.millisElapsed() > ANIM_DELAY) {
+			animIndex = (animIndex + 1) % animFrames.length;
+			setImage(animFrames[animIndex]);
+			animTimer.mark();
+		}
+	}
+
+	/**
 	 * Update this spider.
 	 */
 	public void act() {
+		updateAnimation();
 		updateLocation();
 	}
 }

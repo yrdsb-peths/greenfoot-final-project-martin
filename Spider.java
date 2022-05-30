@@ -10,6 +10,9 @@ public class Spider extends Actor {
 	private static final int SPEED = 2;
 	private static final int ANIM_DELAY = 250;
 
+	private boolean isFacingRight = false;
+	private boolean wasFacingRight = false;
+
 	private static GreenfootImage[] imagesIdle = new GreenfootImage[2];
 	private GreenfootImage[] animFrames;
 	private int animIndex;
@@ -46,6 +49,13 @@ public class Spider extends Actor {
 			dy += SPEED;
 		}
 		setLocation(getX() + dx, getY() + dy);
+		// Update the direction flag
+		wasFacingRight = isFacingRight;
+		if (dx > 0) {
+			isFacingRight = true;
+		} else if (dx < 0) {
+			isFacingRight = false;
+		}
 	}
 
 	/**
@@ -54,16 +64,28 @@ public class Spider extends Actor {
 	private void updateAnimation() {
 		if (animTimer.millisElapsed() > ANIM_DELAY) {
 			animIndex = (animIndex + 1) % animFrames.length;
-			setImage(animFrames[animIndex]);
+			setAnimFrame();
 			animTimer.mark();
+		} else if (isFacingRight != wasFacingRight) {
+			// Animation frame is not yet due to be updated, but the direction has changed
+			setAnimFrame();
 		}
+	}
+
+	private void setAnimFrame() {
+		GreenfootImage image = animFrames[animIndex];
+		if (isFacingRight) {
+			image = new GreenfootImage(image);
+			image.mirrorHorizontally();
+		}
+		setImage(image);
 	}
 
 	/**
 	 * Update this spider.
 	 */
 	public void act() {
-		updateAnimation();
 		updateLocation();
+		updateAnimation();
 	}
 }

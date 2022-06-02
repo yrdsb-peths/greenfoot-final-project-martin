@@ -38,9 +38,12 @@ public class Web extends Actor {
 	public void drag(int endX, int endY) {
 		int width = endX - startX;
 		int height = endY - startY;
+		// Adjust for the circular web because it doesn't reach the corner of the image
+		int imageWidth = width != 0 ? Math.abs(width * 381 / 296) : 1;
+		int imageHeight = height != 0 ? Math.abs(height * 347 / 230) : 1;
 		// Resize the web image
 		GreenfootImage scaledImage = new GreenfootImage(image);
-		scaledImage.scale(width != 0 ? Math.abs(width) : 1, height != 0 ? Math.abs(height) : 1);
+		scaledImage.scale(imageWidth, imageHeight);
 		setImage(scaledImage);
 		// Update this web's location (location is centred in image)
 		setLocation(startX + width / 2, startY + height / 2);

@@ -51,7 +51,22 @@ public class Spider extends Actor {
 		if (Greenfoot.isKeyDown("s") || Greenfoot.isKeyDown("down")) {
 			dy += SPEED;
 		}
-		setLocation(getX() + dx, getY() + dy);
+		// Determine whether or not this movement is valid; whether or not there is a web to move on
+		int oldX = getX();
+		int oldY = getY();
+		setLocation(oldX + dx, oldY + dy);
+		if (!isOnWeb()) {
+			// Check if movement can be done on a single axis instead; only X
+			setLocation(oldX + dx, oldY);
+			if (!isOnWeb()) {
+				// Can't move on the X axis; only Y
+				setLocation(oldX, oldY + dy);
+				if (!isOnWeb()) {
+					// Can't move on either axis, reset
+					setLocation(oldX, oldY);
+				}
+			}
+		}
 		// Update the direction flag
 		wasFacingRight = isFacingRight;
 		if (dx > 0) {
@@ -59,6 +74,22 @@ public class Spider extends Actor {
 		} else if (dx < 0) {
 			isFacingRight = false;
 		}
+	}
+
+	/**
+	 * Check if this spider is currently on top of a web.
+	 *
+	 * @return true if on top of a web, false if not
+	 */
+	private boolean isOnWeb() {
+		int x = getX();
+		int y = getY();
+		for (Web web : getWorld().getObjects(Web.class)) {
+			if (web.isUnderPoint(x, y)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

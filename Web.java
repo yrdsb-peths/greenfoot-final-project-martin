@@ -48,4 +48,19 @@ public class Web extends Actor {
 		// Update this web's location (location is centred in image)
 		setLocation(startX + width / 2, startY + height / 2);
 	}
+
+	/**
+	 * Check if a point is inside of this web.
+	 *
+	 * @param x the x-coordinate of the point
+	 * @param y the y-coordinate of the point
+	 * @return true if the point is inside of this web, false if not
+	 */
+	public boolean isUnderPoint(int x, int y) {
+		// Since webs may be elliptical, Actor.getObjectsInRange doesn't cut it
+		GreenfootImage scaledImage = getImage();
+		double a = Math.pow(x - getX(), 2) / Math.pow(scaledImage.getWidth() / 2, 2);
+		double b = Math.pow(y - getY(), 2) / Math.pow(scaledImage.getHeight() / 2, 2);
+		return a + b < 1;
+	}
 }

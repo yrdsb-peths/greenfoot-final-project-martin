@@ -27,6 +27,11 @@ public class GameWorld extends World {
 		image.fill();
 		addObject(new Spider(), 300, 200);
 		webs = new LinkedList<Web>();
+		// Create initial web
+		addWeb(200, 100);
+		currentWeb.drag(400, 300);
+		currentWeb.lockIn();
+		currentWeb = null;
 	}
 
 	/**

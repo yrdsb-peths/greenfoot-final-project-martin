@@ -126,5 +126,8 @@ public class Spider extends Actor {
 	public void act() {
 		updateLocation();
 		updateAnimation();
+		if (!isOnWeb()) {
+			Greenfoot.setWorld(new GameOverWorld());
+		}
 	}
 }

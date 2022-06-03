@@ -16,6 +16,7 @@ public class Web extends Actor {
 	private int startX;
 	private int startY;
 	private boolean isLockedIn = false;
+	private boolean isFading = false;
 	private SimpleTimer timer;
 
 	/**
@@ -76,6 +77,13 @@ public class Web extends Actor {
 	}
 
 	/**
+	 * Start fading this web away to remove it.
+	 */
+	public void fadeAway() {
+		isFading = true;
+	}
+
+	/**
 	 * Check if a point is inside of this web.
 	 *
 	 * @param x the x-coordinate of the point
@@ -94,7 +102,7 @@ public class Web extends Actor {
 	 * Check if it is time to fade or remove this web after being locked in.
 	 */
 	public void act() {
-		if (isLockedIn && timer.millisElapsed() > DURATION) {
+		if (isLockedIn && (isFading || timer.millisElapsed() > DURATION)) {
 			// Gradually decrease the image 'transparency' (really opacity) before removing this web
 			GreenfootImage image = getImage();
 			int newTransparency = image.getTransparency() - FADE_INTERVAL;

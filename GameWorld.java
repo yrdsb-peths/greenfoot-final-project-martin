@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.LinkedList;
 
 /**
  * The world in which the core Super Spider game runs.
@@ -7,7 +8,10 @@ import greenfoot.*;
  * @version May 2022
  */
 public class GameWorld extends World {
+	private static final int MAX_WEB_COUNT = 3;
+
 	private Web currentWeb = null;
+	private LinkedList<Web> webs;
 	private int dragX;
 	private int dragY;
 
@@ -22,6 +26,33 @@ public class GameWorld extends World {
 		image.setColor(new Color(128, 128, 128));
 		image.fill();
 		addObject(new Spider(), 300, 200);
+		webs = new LinkedList<Web>();
+	}
+
+	/**
+	 * Create a new web and add it to this world and its list of webs.
+	 *
+	 * @param x the x position of the new web
+	 * @param y the y position of the new web
+	 */
+	private void addWeb(int x, int y) {
+		currentWeb = new Web(x, y);
+		addObject(currentWeb, 0, 0);
+		// Prevent the player from making unlimited webs; remove the oldest after reaching the max
+		if (webs.size() >= MAX_WEB_COUNT) {
+			fadeWebAway(webs.getFirst());
+		}
+		webs.add(currentWeb);
+	}
+
+	/**
+	 * Start fading a web away and remove it from this world's list of webs.
+	 *
+	 * @param web the web to fade away
+	 */
+	public void fadeWebAway(Web web) {
+		webs.remove(web);
+		web.fadeAway();
 	}
 
 	/**
@@ -31,8 +62,7 @@ public class GameWorld extends World {
 		// Create new webs when the mouse is pressed
 		if (Greenfoot.mousePressed(null)) {
 			MouseInfo mouse = Greenfoot.getMouseInfo();
-			currentWeb = new Web(mouse.getX(), mouse.getY());
-			addObject(currentWeb, 0, 0);
+			addWeb(mouse.getX(), mouse.getY());
 		}
 		// Update the current web while dragging the mouse
 		if (Greenfoot.mouseDragged(null)) {

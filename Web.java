@@ -15,7 +15,7 @@ public class Web extends Actor {
 	private GreenfootImage originalImage;
 	private int startX;
 	private int startY;
-	private boolean lockedIn = false;
+	private boolean isLockedIn = false;
 	private SimpleTimer timer;
 
 	/**
@@ -57,6 +57,10 @@ public class Web extends Actor {
 		setLocation(startX + width / 2, startY + height / 2);
 	}
 
+	public boolean isLockedIn() {
+		return isLockedIn;
+	}
+
 	/**
 	 * Lock in this web and start its timer.
 	 */
@@ -67,7 +71,7 @@ public class Web extends Actor {
 		image.scale(currentImage.getWidth(), currentImage.getHeight());
 		setImage(image);
 		// Start timing the existence of this web
-		lockedIn = true;
+		isLockedIn = true;
 		timer.mark();
 	}
 
@@ -90,7 +94,7 @@ public class Web extends Actor {
 	 * Check if it is time to fade or remove this web after being locked in.
 	 */
 	public void act() {
-		if (lockedIn && timer.millisElapsed() > DURATION) {
+		if (isLockedIn && timer.millisElapsed() > DURATION) {
 			// Gradually decrease the image 'transparency' (really opacity) before removing this web
 			GreenfootImage image = getImage();
 			int newTransparency = image.getTransparency() - FADE_INTERVAL;

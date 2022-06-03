@@ -85,7 +85,7 @@ public class Spider extends Actor {
 		int x = getX();
 		int y = getY();
 		for (Web web : getWorld().getObjects(Web.class)) {
-			if (web.isUnderPoint(x, y)) {
+			if (web.isLockedIn() && web.isUnderPoint(x, y)) {
 				return true;
 			}
 		}

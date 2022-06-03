@@ -12,7 +12,7 @@ public class Web extends Actor {
 	// Number of steps to decrease 'transparency' (really opacity) each act cycle while fading away
 	private static final int FADE_INTERVAL = 4;
 
-	private GreenfootImage image;
+	private GreenfootImage originalImage;
 	private int startX;
 	private int startY;
 	private boolean lockedIn = false;
@@ -29,11 +29,11 @@ public class Web extends Actor {
 		this.startY = startY;
 		setLocation(startX, startY);
 		// Load and set initial image, used to prevent data loss from upscaling after downscaling
-		image = new GreenfootImage("images/web.png");
+		originalImage = new GreenfootImage("images/web-notlocked.png");
 		// A web will initially have no size
-		GreenfootImage scaledImage = new GreenfootImage(image);
-		scaledImage.scale(1, 1);
-		setImage(scaledImage);
+		GreenfootImage image = new GreenfootImage(originalImage);
+		image.scale(1, 1);
+		setImage(image);
 		timer = new SimpleTimer();
 	}
 
@@ -50,17 +50,23 @@ public class Web extends Actor {
 		int imageWidth = width != 0 ? Math.abs(width * 381 / 296) : 1;
 		int imageHeight = height != 0 ? Math.abs(height * 347 / 230) : 1;
 		// Resize the web image
-		GreenfootImage scaledImage = new GreenfootImage(image);
-		scaledImage.scale(imageWidth, imageHeight);
-		setImage(scaledImage);
+		GreenfootImage image = new GreenfootImage(originalImage);
+		image.scale(imageWidth, imageHeight);
+		setImage(image);
 		// Update this web's location (location is centred in image)
 		setLocation(startX + width / 2, startY + height / 2);
 	}
 
 	/**
-	 * Lock in this web to start its timer.
+	 * Lock in this web and start its timer.
 	 */
 	public void lockIn() {
+		// Switch to the locked-in image
+		GreenfootImage image = new GreenfootImage("images/web.png");
+		GreenfootImage currentImage = getImage();
+		image.scale(currentImage.getWidth(), currentImage.getHeight());
+		setImage(image);
+		// Start timing the existence of this web
 		lockedIn = true;
 		timer.mark();
 	}
@@ -74,9 +80,9 @@ public class Web extends Actor {
 	 */
 	public boolean isUnderPoint(int x, int y) {
 		// Since webs may be elliptical, Actor.getObjectsInRange doesn't cut it
-		GreenfootImage scaledImage = getImage();
-		double a = Math.pow(x - getX(), 2) / Math.pow(scaledImage.getWidth() / 2, 2);
-		double b = Math.pow(y - getY(), 2) / Math.pow(scaledImage.getHeight() / 2, 2);
+		GreenfootImage image = getImage();
+		double a = Math.pow(x - getX(), 2) / Math.pow(image.getWidth() / 2, 2);
+		double b = Math.pow(y - getY(), 2) / Math.pow(image.getHeight() / 2, 2);
 		return a + b < 1;
 	}
 
@@ -86,14 +92,14 @@ public class Web extends Actor {
 	public void act() {
 		if (lockedIn && timer.millisElapsed() > DURATION) {
 			// Gradually decrease the image 'transparency' (really opacity) before removing this web
-			GreenfootImage scaledImage = getImage();
-			int newTransparency = scaledImage.getTransparency() - FADE_INTERVAL;
+			GreenfootImage image = getImage();
+			int newTransparency = image.getTransparency() - FADE_INTERVAL;
 			if (newTransparency <= 0) {
 				// Remove this web once it has become fully transparent
 				getWorld().removeObject(this);
 				return;
 			}
-			scaledImage.setTransparency(newTransparency);
+			image.setTransparency(newTransparency);
 		}
 	}
 }

@@ -7,7 +7,7 @@ import greenfoot.*;
  * @version May 2022
  */
 public class GameWorld extends World {
-	private Web currentWeb;
+	private Web currentWeb = null;
 	private int dragX;
 	private int dragY;
 
@@ -28,14 +28,21 @@ public class GameWorld extends World {
 	 * Create webs when the mouse is dragged.
 	 */
 	public void act() {
+		// Create new webs when the mouse is pressed
 		if (Greenfoot.mousePressed(null)) {
 			MouseInfo mouse = Greenfoot.getMouseInfo();
 			currentWeb = new Web(mouse.getX(), mouse.getY());
 			addObject(currentWeb, 0, 0);
 		}
+		// Update the current web while dragging the mouse
 		if (Greenfoot.mouseDragged(null)) {
 			MouseInfo mouse = Greenfoot.getMouseInfo();
 			currentWeb.drag(mouse.getX(), mouse.getY());
+		}
+		// Lock in the current web after a mouse drag has ended
+		if (Greenfoot.mouseDragEnded(null)) {
+			currentWeb.lockIn();
+			currentWeb = null;
 		}
 	}
 }

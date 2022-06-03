@@ -7,9 +7,16 @@ import greenfoot.*;
  * @version June 2022
  */
 public class Web extends Actor {
+	// Number of milliseconds that a web will exist for after being locked in
+	private static final int DURATION = 5000;
+	// Number of steps to decrease 'transparency' (really opacity) each act cycle while fading away
+	private static final int FADE_INTERVAL = 4;
+
 	private GreenfootImage image;
 	private int startX;
 	private int startY;
+	private boolean lockedIn = false;
+	private SimpleTimer timer;
 
 	/**
 	 * Create a new Web.
@@ -27,6 +34,7 @@ public class Web extends Actor {
 		GreenfootImage scaledImage = new GreenfootImage(image);
 		scaledImage.scale(1, 1);
 		setImage(scaledImage);
+		timer = new SimpleTimer();
 	}
 
 	/**
@@ -50,6 +58,14 @@ public class Web extends Actor {
 	}
 
 	/**
+	 * Lock in this web to start its timer.
+	 */
+	public void lockIn() {
+		lockedIn = true;
+		timer.mark();
+	}
+
+	/**
 	 * Check if a point is inside of this web.
 	 *
 	 * @param x the x-coordinate of the point
@@ -62,5 +78,22 @@ public class Web extends Actor {
 		double a = Math.pow(x - getX(), 2) / Math.pow(scaledImage.getWidth() / 2, 2);
 		double b = Math.pow(y - getY(), 2) / Math.pow(scaledImage.getHeight() / 2, 2);
 		return a + b < 1;
+	}
+
+	/**
+	 * Check if it is time to fade or remove this web after being locked in.
+	 */
+	public void act() {
+		if (lockedIn && timer.millisElapsed() > DURATION) {
+			// Gradually decrease the image 'transparency' (really opacity) before removing this web
+			GreenfootImage scaledImage = getImage();
+			int newTransparency = scaledImage.getTransparency() - FADE_INTERVAL;
+			if (newTransparency <= 0) {
+				// Remove this web once it has become fully transparent
+				getWorld().removeObject(this);
+				return;
+			}
+			scaledImage.setTransparency(newTransparency);
+		}
 	}
 }

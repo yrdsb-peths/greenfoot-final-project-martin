@@ -21,7 +21,7 @@ public class GameWorld extends World {
 	public GameWorld() {
 		// Create a new world with 600x400 cells with a cell size of 1x1 pixels.
 		super(600, 400, 1);
-		setPaintOrder(Button.class, Label.class, Spider.class, Web.class);
+		setPaintOrder(Button.class, Label.class, Spider.class, Coin.class, Web.class);
 		GreenfootImage image = getBackground();
 		image.setColor(new Color(128, 128, 128));
 		image.fill();

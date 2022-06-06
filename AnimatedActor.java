@@ -62,4 +62,11 @@ public class AnimatedActor extends Actor {
 		timer.mark();
 		return true;
 	}
+
+	/**
+	 * Update this animated actor.
+	 */
+	public void act() {
+		updateAnimation();
+	}
 }

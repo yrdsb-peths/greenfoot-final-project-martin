@@ -15,6 +15,9 @@ public class GameWorld extends World {
 	private int dragX;
 	private int dragY;
 
+	private int score = 0;
+	private Label scoreLabel;
+
 	/**
 	 * Create a new game world.
 	 */
@@ -32,6 +35,9 @@ public class GameWorld extends World {
 		currentWeb.drag(400, 300);
 		currentWeb.lockIn();
 		currentWeb = null;
+		// Initialize score and its label
+		scoreLabel = new Label(score, 50);
+		addObject(scoreLabel, 25, 25);
 	}
 
 	/**
@@ -58,6 +64,17 @@ public class GameWorld extends World {
 	public void fadeWebAway(Web web) {
 		webs.remove(web);
 		web.fadeAway();
+	}
+
+	/**
+	 * Remove a coin from this world and increase the score.
+	 *
+	 * @param coin the coin to collect
+	 */
+	public void collectCoin(Coin coin) {
+		removeObject(coin);
+		score++;
+		scoreLabel.setValue(score);
 	}
 
 	/**

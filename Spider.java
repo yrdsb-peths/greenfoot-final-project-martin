@@ -113,10 +113,20 @@ public class Spider extends AnimatedActor {
 	}
 
 	/**
+	 * Collect any coins that this spider is touching.
+	 */
+	private void collectCoins() {
+		for (Coin coin : getIntersectingObjects(Coin.class)) {
+			((GameWorld) getWorld()).collectCoin(coin);
+		}
+	}
+
+	/**
 	 * Update this spider.
 	 */
 	public void act() {
 		updateLocation();
+		collectCoins();
 		updateAnimation();
 		if (!isOnWeb()) {
 			Greenfoot.setWorld(new GameOverWorld());

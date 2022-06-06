@@ -6,17 +6,13 @@ import greenfoot.*;
  * @author Martin Baldwin
  * @version May 2022
  */
-public class Spider extends Actor {
+public class Spider extends AnimatedActor {
 	private static final int SPEED = 2;
-	private static final int ANIM_DELAY = 250;
 
 	private boolean isFacingRight = false;
 	private boolean wasFacingRight = false;
 
 	private static GreenfootImage[] imagesIdle = new GreenfootImage[2];
-	private GreenfootImage[] animFrames;
-	private int animIndex;
-	private SimpleTimer animTimer;
 
 	/**
 	 * Create a new spider.
@@ -26,11 +22,7 @@ public class Spider extends Actor {
 		for (int i = 0; i < imagesIdle.length; i++) {
 			imagesIdle[i] = new GreenfootImage("images/spider-idle-" + i + ".png");
 		}
-		// Initialize animation
-		animFrames = imagesIdle;
-		animIndex = 0;
-		animTimer = new SimpleTimer();
-		setImage(animFrames[animIndex]);
+		setAnimation(imagesIdle);
 	}
 
 	/**
@@ -94,24 +86,24 @@ public class Spider extends Actor {
 
 	/**
 	 * Advance this spider's animation and update its image.
+	 *
+	 * @return true if the animation was advanced, false otherwise
 	 */
-	private void updateAnimation() {
-		if (animTimer.millisElapsed() > ANIM_DELAY) {
-			// Advance animation frame
-			animIndex = (animIndex + 1) % animFrames.length;
-			setAnimFrame();
-			animTimer.mark();
-		} else if (isFacingRight != wasFacingRight) {
+	protected boolean updateAnimation() {
+		boolean wasUpdated = super.updateAnimation();
+		if (!wasUpdated && isFacingRight != wasFacingRight) {
 			// Animation frame is not yet due to be updated, but the direction has changed
-			setAnimFrame();
+			updateAnimationFrame();
+			wasUpdated = true;
 		}
+		return wasUpdated;
 	}
 
 	/**
 	 * Set this spider's image according to its current animation frame and direction.
 	 */
-	private void setAnimFrame() {
-		GreenfootImage image = animFrames[animIndex];
+	protected void updateAnimationFrame() {
+		GreenfootImage image = getAnimationFrame();
 		// Mirror the image if facing right (all images originally face left)
 		if (isFacingRight) {
 			image = new GreenfootImage(image);

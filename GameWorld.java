@@ -17,6 +17,8 @@ public class GameWorld extends World {
 
 	private int score = 0;
 	private Label scoreLabel;
+	private SimpleTimer timer;
+	private Label timerLabel;
 
 	/**
 	 * Create a new game world.
@@ -35,9 +37,12 @@ public class GameWorld extends World {
 		currentWeb.drag(400, 300);
 		currentWeb.lockIn();
 		currentWeb = null;
-		// Initialize score and its label
+		// Initialize score, timer, and their labels
 		scoreLabel = new Label(score, 50);
 		addObject(scoreLabel, 25, 25);
+		timer = new SimpleTimer();
+		timerLabel = new Label(0, 50);
+		addObject(timerLabel, 550, 25);
 	}
 
 	/**
@@ -96,5 +101,14 @@ public class GameWorld extends World {
 			currentWeb.lockIn();
 			currentWeb = null;
 		}
+		// Draw time
+		int time = timer.millisElapsed();
+		String minutes = String.valueOf(time / 60000);
+		String seconds = String.valueOf(time / 1000 % 60);
+		// Add leading zero if seconds is only one digit
+		if (seconds.length() < 2) {
+			seconds = "0" + seconds;
+		}
+		timerLabel.setValue(minutes + ":" + seconds);
 	}
 }

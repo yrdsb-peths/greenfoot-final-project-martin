@@ -12,6 +12,7 @@ public class Spray extends AnimatedActor {
 	private static final int LIFESPAN = 10000;
 
 	private SimpleTimer timer;
+	private boolean isMovingIn;
 	private int targetX;
 	private int targetY;
 
@@ -40,19 +41,29 @@ public class Spray extends AnimatedActor {
 		setLocation(targetX, targetY);
 		turnTowards(world.getWidth() / 2, world.getHeight() / 2);
 		move(-100);
+		isMovingIn = true;
 	}
 
 	/**
 	 * Update this spray.
 	 */
 	public void act() {
-		int time = timer.millisElapsed();
-		if (time >= LIFESPAN) {
-			getWorld().removeObject(this);
-		} else if (time >= AWAY_TIME) {
-			move(-1);
-		} else if (time < STILL_TIME) {
-			move(1);
+		if (isMovingIn) {
+			// Current objective: move to the target position
+			if (Math.abs(getX() - targetX) <= 100 && Math.abs(getY() - targetY) <= 100) {
+				isMovingIn = false;
+				timer.mark();
+			} else {
+				move(1);
+			}
+		} else {
+			// Wait to spray, then move out of the world, then remove this spray
+			int time = timer.millisElapsed();
+			if (time >= LIFESPAN + 5000) {
+				getWorld().removeObject(this);
+			} else if (time >= LIFESPAN) {
+				move(-1);
+			}
 		}
 		updateAnimation();
 	}

@@ -16,19 +16,33 @@ public class Spray extends AnimatedActor {
 	private int targetX;
 	private int targetY;
 
+	private static boolean hasLoadedImages = false;
+	private static final GreenfootImage[] images = new GreenfootImage[2];
+
 	/**
 	 * Create a new spray object.
 	 */
 	public Spray() {
-		// Load images
-		GreenfootImage[] images = new GreenfootImage[2];
-		for (int i = 0; i < images.length; i++) {
-			images[i] = new GreenfootImage("images/spray-" + i + ".png");
-		}
 		setAnimation(images);
 		timer = new SimpleTimer();
 	}
 
+	/**
+	 * Load all images that this spray uses.
+	 */
+	protected void loadImages() {
+		if (hasLoadedImages) {
+			return;
+		}
+		for (int i = 0; i < images.length; i++) {
+			images[i] = new GreenfootImage("images/spray-" + i + ".png");
+		}
+		hasLoadedImages = true;
+	}
+
+	/**
+	 * Initialize this spray's position randomly when added to a world.
+	 */
 	protected void addedToWorld(World world) {
 		targetX = Greenfoot.getRandomNumber(100);
 		if (Greenfoot.getRandomNumber(2) == 0) {

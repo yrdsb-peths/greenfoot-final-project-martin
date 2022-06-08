@@ -7,15 +7,26 @@ import greenfoot.*;
  * @version June 2022
  */
 public class Coin extends AnimatedActor {
+	private static boolean hasLoadedImages = false;
+	private static final GreenfootImage[] images = new GreenfootImage[2];
+
 	/**
 	 * Create a new coin.
 	 */
 	public Coin() {
-		// Load animation images
-		GreenfootImage[] images = new GreenfootImage[2];
+		setAnimation(images);
+	}
+
+	/**
+	 * Load all images that this coin uses.
+	 */
+	protected void loadImages() {
+		if (hasLoadedImages) {
+			return;
+		}
 		for (int i = 0; i < images.length; i++) {
 			images[i] = new GreenfootImage("images/coin-" + i + ".png");
 		}
-		setAnimation(images);
+		hasLoadedImages = true;
 	}
 }

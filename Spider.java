@@ -12,17 +12,27 @@ public class Spider extends AnimatedActor {
 	private boolean isFacingRight = false;
 	private boolean wasFacingRight = false;
 
-	private static GreenfootImage[] imagesIdle = new GreenfootImage[2];
+	private static boolean hasLoadedImages = false;
+	private static final GreenfootImage[] imagesIdle = new GreenfootImage[2];
 
 	/**
 	 * Create a new spider.
 	 */
 	public Spider() {
-		// Load images into image arrays
+		setAnimation(imagesIdle);
+	}
+
+	/**
+	 * Load all images that this spider uses.
+	 */
+	protected void loadImages() {
+		if (hasLoadedImages) {
+			return;
+		}
 		for (int i = 0; i < imagesIdle.length; i++) {
 			imagesIdle[i] = new GreenfootImage("images/spider-idle-" + i + ".png");
 		}
-		setAnimation(imagesIdle);
+		hasLoadedImages = true;
 	}
 
 	/**

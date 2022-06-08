@@ -6,7 +6,7 @@ import greenfoot.*;
  * @author Martin Baldwin
  * @version June 2022
  */
-public class AnimatedActor extends Actor {
+public abstract class AnimatedActor extends Actor {
 	private static final int FRAME_DELAY = 250;
 
 	private GreenfootImage[] frames;
@@ -24,7 +24,7 @@ public class AnimatedActor extends Actor {
 	/**
 	 * Load all images that this animated actor uses.
 	 */
-	protected void loadImages() {}
+	protected abstract void loadImages();
 
 	/**
 	 * Set this actor's animation to an array of animation frames.

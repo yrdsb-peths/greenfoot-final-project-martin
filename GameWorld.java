@@ -9,6 +9,7 @@ import java.util.LinkedList;
  */
 public class GameWorld extends World {
 	private static final int MAX_WEB_COUNT = 3;
+	private static final int SPRAY_INTERVAL = 10000;
 
 	private Web currentWeb = null;
 	private LinkedList<Web> webs;
@@ -18,6 +19,7 @@ public class GameWorld extends World {
 	private int score = 0;
 	private Label scoreLabel;
 	private SimpleTimer timer;
+	private SimpleTimer sprayTimer;
 	private Label timerLabel;
 
 	/**
@@ -31,6 +33,7 @@ public class GameWorld extends World {
 		image.setColor(new Color(128, 128, 128));
 		image.fill();
 		addObject(new Spider(), 300, 200);
+		sprayTimer = new SimpleTimer();
 		webs = new LinkedList<Web>();
 		// Create initial web
 		addWeb(200, 100);
@@ -101,6 +104,13 @@ public class GameWorld extends World {
 			currentWeb.lockIn();
 			currentWeb = null;
 		}
+
+		// Add new sprays every once in a while
+		if (sprayTimer.millisElapsed() > SPRAY_INTERVAL) {
+			addObject(new Spray(), 0, 0);
+			sprayTimer.mark();
+		}
+
 		// Draw time
 		int time = timer.millisElapsed();
 		String minutes = String.valueOf(time / 60000);

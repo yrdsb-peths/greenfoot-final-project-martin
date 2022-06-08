@@ -7,9 +7,7 @@ import greenfoot.*;
  * @version June 2022
  */
 public class Spray extends AnimatedActor {
-	private static final int STILL_TIME = 2000;
-	private static final int AWAY_TIME = 8000;
-	private static final int LIFESPAN = 10000;
+	private static final int LIFESPAN = 5000;
 
 	private SimpleTimer timer;
 	private boolean isMovingIn;

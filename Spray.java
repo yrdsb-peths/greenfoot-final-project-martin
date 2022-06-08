@@ -46,19 +46,22 @@ public class Spray extends AnimatedActor {
 	 * Initialize this spray's position randomly when added to a world.
 	 */
 	protected void addedToWorld(World world) {
-		targetX = Greenfoot.getRandomNumber(100);
-		if (Greenfoot.getRandomNumber(2) == 0) {
-			targetX = world.getWidth() - targetX;
-		}
-		targetY = Greenfoot.getRandomNumber(100);
-		if (Greenfoot.getRandomNumber(2) == 0) {
-			targetY = world.getHeight() - targetY;
+		int worldWidth = world.getWidth();
+		int worldHeight = world.getHeight();
+		targetX = Greenfoot.getRandomNumber(worldWidth);
+		if (targetX < 50 || targetX > worldWidth - 50) {
+			targetY = Greenfoot.getRandomNumber(worldHeight);
+		} else {
+			targetY = Greenfoot.getRandomNumber(50);
+			if (Greenfoot.getRandomNumber(2) == 0) {
+				targetY = worldHeight - targetY;
+			}
 		}
 		setLocation(targetX, targetY);
 		x = (double) targetX;
 		y = (double) targetY;
-		turnTowards(world.getWidth() / 2, world.getHeight() / 2);
-		move(-100);
+		turnTowards(worldWidth / 2, worldHeight / 2);
+		move(-200);
 		isMovingIn = true;
 	}
 

@@ -15,7 +15,10 @@ public class Web extends Actor {
 	// Number of steps to decrease 'transparency' (really opacity) each act cycle while fading away
 	private static final int FADE_INTERVAL = 4;
 
-	private GreenfootImage originalImage;
+	private static GreenfootImage notlockedImage;
+	private static GreenfootImage lockedImage;
+	private static boolean hasLoadedImages = false;
+
 	private int startX;
 	private int startY;
 	private boolean isLockedIn = false;
@@ -33,10 +36,14 @@ public class Web extends Actor {
 		this.startX = startX;
 		this.startY = startY;
 		setLocation(startX, startY);
-		// Load and set initial image, used to prevent data loss from upscaling after downscaling
-		originalImage = new GreenfootImage("images/web-notlocked.png");
+		if (!hasLoadedImages) {
+			// Load and set initial image, used to prevent data loss from upscaling after downscaling
+			notlockedImage = new GreenfootImage("images/web-notlocked.png");
+			lockedImage = new GreenfootImage("images/web.png");
+			hasLoadedImages = true;
+		}
 		// A web will initially have no size
-		GreenfootImage image = new GreenfootImage(originalImage);
+		GreenfootImage image = new GreenfootImage(notlockedImage);
 		image.scale(1, 1);
 		setImage(image);
 		timer = new SimpleTimer();
@@ -55,7 +62,7 @@ public class Web extends Actor {
 		int imageWidth = width != 0 ? Math.abs(width * 381 / 296) : 1;
 		int imageHeight = height != 0 ? Math.abs(height * 347 / 230) : 1;
 		// Resize the web image
-		GreenfootImage image = new GreenfootImage(originalImage);
+		GreenfootImage image = new GreenfootImage(notlockedImage);
 		image.scale(imageWidth, imageHeight);
 		setImage(image);
 		// Update this web's location (location is centred in image)
@@ -71,7 +78,7 @@ public class Web extends Actor {
 	 */
 	public void lockIn() {
 		// Switch to the locked-in image
-		GreenfootImage image = new GreenfootImage("images/web.png");
+		GreenfootImage image = new GreenfootImage(lockedImage);
 		GreenfootImage currentImage = getImage();
 		int width = currentImage.getWidth();
 		int height = currentImage.getHeight();

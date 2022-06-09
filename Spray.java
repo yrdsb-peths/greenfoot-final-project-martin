@@ -8,8 +8,10 @@ import greenfoot.*;
  */
 public class Spray extends AnimatedActor {
 	private static final int LIFESPAN = 5000;
+	private static final int GAS_INTERVAL = 750;
 
 	private SimpleTimer timer;
+	private SimpleTimer gasTimer;
 	private boolean isMovingIn;
 	private int targetX;
 	private int targetY;
@@ -24,6 +26,7 @@ public class Spray extends AnimatedActor {
 		loadImages();
 		setAnimation(images);
 		timer = new SimpleTimer();
+		gasTimer = new SimpleTimer();
 	}
 
 	/**
@@ -79,6 +82,9 @@ public class Spray extends AnimatedActor {
 				getWorld().removeObject(this);
 			} else if (time >= LIFESPAN) {
 				move(-1);
+			} else if (gasTimer.millisElapsed() > GAS_INTERVAL) {
+				getWorld().addObject(new Gas(this), 0, 0);
+				gasTimer.mark();
 			}
 		}
 		updateAnimation();

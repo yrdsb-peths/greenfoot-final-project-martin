@@ -14,13 +14,14 @@ public class Coin extends AnimatedActor {
 	 * Create a new coin.
 	 */
 	public Coin() {
+		loadImages();
 		setAnimation(images);
 	}
 
 	/**
-	 * Load all images that this coin uses.
+	 * Load all images that coin actors use.
 	 */
-	protected void loadImages() {
+	private static void loadImages() {
 		if (hasLoadedImages) {
 			return;
 		}

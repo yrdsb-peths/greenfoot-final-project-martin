@@ -21,14 +21,8 @@ public abstract class AnimatedActor extends Actor {
 	 * Create a new animated actor.
 	 */
 	public AnimatedActor() {
-		loadImages();
 		timer = new SimpleTimer();
 	}
-
-	/**
-	 * Load all images that this animated actor uses.
-	 */
-	protected abstract void loadImages();
 
 	/**
 	 * Set this actor's animation to an array of animation frames.

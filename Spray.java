@@ -21,14 +21,15 @@ public class Spray extends AnimatedActor {
 	 * Create a new spray object.
 	 */
 	public Spray() {
+		loadImages();
 		setAnimation(images);
 		timer = new SimpleTimer();
 	}
 
 	/**
-	 * Load all images that this spray uses.
+	 * Load all images that spray actors use.
 	 */
-	protected void loadImages() {
+	private static void loadImages() {
 		if (hasLoadedImages) {
 			return;
 		}

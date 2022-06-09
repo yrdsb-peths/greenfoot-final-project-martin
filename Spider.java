@@ -19,13 +19,14 @@ public class Spider extends AnimatedActor {
 	 * Create a new spider.
 	 */
 	public Spider() {
+		loadImages();
 		setAnimation(imagesIdle);
 	}
 
 	/**
-	 * Load all images that this spider uses.
+	 * Load all images that spider actors use.
 	 */
-	protected void loadImages() {
+	private static void loadImages() {
 		if (hasLoadedImages) {
 			return;
 		}

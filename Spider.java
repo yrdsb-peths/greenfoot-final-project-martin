@@ -9,11 +9,16 @@ import greenfoot.*;
 public class Spider extends AnimatedActor {
 	private static final int SPEED = 2;
 
+	private static boolean hasLoadedImages = false;
+	private static final GreenfootImage[] imagesIdle = new GreenfootImage[2];
+
 	private boolean isFacingRight = false;
 	private boolean wasFacingRight = false;
 
-	private static boolean hasLoadedImages = false;
-	private static final GreenfootImage[] imagesIdle = new GreenfootImage[2];
+	private int lives = 3;
+	private boolean isDying = false;
+	// Y velocity for the spider's dying animation
+	private int velY;
 
 	/**
 	 * Create a new spider.
@@ -136,11 +141,45 @@ public class Spider extends AnimatedActor {
 	 * Update this spider.
 	 */
 	public void act() {
+		if (isDying) {
+			updateDyingAnimation();
+			return;
+		}
 		updateLocation();
 		collectCoins();
 		updateAnimation();
 		if (!isOnWeb()) {
-			Greenfoot.setWorld(new GameOverWorld());
+			die();
+		}
+	}
+
+	/**
+	 * Remove a life from this spider.
+	 */
+	private void die() {
+		lives--;
+		// Initiate the dying animation
+		isDying = true;
+		velY = -18;
+	}
+
+	/**
+	 * Continue the animation of this spider's death.
+	 */
+	private void updateDyingAnimation() {
+		velY++;
+		int y = getY() + velY;
+		if (y >= 450) {
+			if (lives <= 0) {
+				// Out of lives, game is over
+				Greenfoot.setWorld(new GameOverWorld());
+			} else {
+				// Reset to start a new life
+				setLocation(300, 200);
+				isDying = false;
+			}
+		} else {
+			setLocation(getX(), y);
 		}
 	}
 }

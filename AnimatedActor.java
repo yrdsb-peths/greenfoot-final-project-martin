@@ -13,6 +13,10 @@ public abstract class AnimatedActor extends Actor {
 	private int index;
 	private SimpleTimer timer;
 
+	// Precise location for fine movement
+	private double x;
+	private double y;
+
 	/**
 	 * Create a new animated actor.
 	 */
@@ -74,5 +78,29 @@ public abstract class AnimatedActor extends Actor {
 	 */
 	public void act() {
 		updateAnimation();
+	}
+
+	/**
+	 * Assign a new location for this animated actor.
+	 *
+	 * @param x location index on the x-axis
+	 * @param y location index on the y-axis
+	 */
+	public void setLocation(int x, int y) {
+		this.x = (double) x;
+		this.y = (double) y;
+		super.setLocation(x, y);
+	}
+
+	/**
+	 * Move this animated actor the specified distance in the direction it is currently facing.
+	 *
+	 * @param distance the distance to move (in cell-size units); a negative value will move backwards
+	 */
+	public void move(int distance) {
+		double rotation = Math.toRadians(getRotation());
+		x += Math.cos(rotation) * (double) distance;
+		y += Math.sin(rotation) * (double) distance;
+		super.setLocation((int) x, (int) y);
 	}
 }

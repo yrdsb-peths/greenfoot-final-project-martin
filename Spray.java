@@ -13,8 +13,6 @@ public class Spray extends AnimatedActor {
 	private boolean isMovingIn;
 	private int targetX;
 	private int targetY;
-	private double x;
-	private double y;
 
 	private static boolean hasLoadedImages = false;
 	private static final GreenfootImage[] images = new GreenfootImage[2];
@@ -56,24 +54,9 @@ public class Spray extends AnimatedActor {
 			}
 		}
 		setLocation(targetX, targetY);
-		x = (double) targetX;
-		y = (double) targetY;
 		turnTowards(worldWidth / 2, worldHeight / 2);
 		move(-200);
 		isMovingIn = true;
-	}
-
-	/**
-	 * Move this spray the specified distance in the direction it is currently facing.
-	 *
-	 * @param distance the distance to move (in cell-size units); a negative value will move backwards
-	 */
-	public void move(int distance) {
-		// Use double coordinates to avoid loss of precision in movement like the Actor.move method does
-		double rotation = Math.toRadians(getRotation());
-		x += Math.cos(rotation) * (double) distance;
-		y += Math.sin(rotation) * (double) distance;
-		setLocation((int) x, (int) y);
 	}
 
 	/**
@@ -82,7 +65,7 @@ public class Spray extends AnimatedActor {
 	public void act() {
 		if (isMovingIn) {
 			// Current objective: move to the target position
-			if (Math.abs((int) x - targetX ) < 3 && Math.abs((int) y - targetY) < 3) {
+			if (Math.abs(getX() - targetX) < 3 && Math.abs(getY() - targetY) < 3) {
 				isMovingIn = false;
 				timer.mark();
 			} else {

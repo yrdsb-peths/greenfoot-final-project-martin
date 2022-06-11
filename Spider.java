@@ -177,6 +177,7 @@ public class Spider extends AnimatedActor {
 				// Reset to start a new life
 				setLocation(300, 200);
 				isDying = false;
+				((GameWorld) getWorld()).createInitialWeb();
 			}
 		} else {
 			setLocation(getX(), y);

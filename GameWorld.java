@@ -35,17 +35,23 @@ public class GameWorld extends World {
 		addObject(new Spider(), 300, 200);
 		sprayTimer = new SimpleTimer();
 		webs = new LinkedList<Web>();
-		// Create initial web
-		addWeb(200, 100);
-		currentWeb.drag(400, 300);
-		currentWeb.lockIn();
-		currentWeb = null;
+		createInitialWeb();
 		// Initialize score, timer, and their labels
 		scoreLabel = new Label(score, 50);
 		addObject(scoreLabel, 25, 25);
 		timer = new SimpleTimer();
 		timerLabel = new Label(0, 50);
 		addObject(timerLabel, 550, 25);
+	}
+
+	/**
+	 * Create the web that the spider is to begin a life on.
+	 */
+	public void createInitialWeb() {
+		addWeb(200, 100);
+		currentWeb.drag(400, 300);
+		currentWeb.lockIn();
+		currentWeb = null;
 	}
 
 	/**

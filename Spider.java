@@ -49,6 +49,13 @@ public class Spider extends AnimatedActor {
 	}
 
 	/**
+	 * Tell the game world to draw hearts when this spider is added to it.
+	 */
+	protected void addedToWorld(World world) {
+		((GameWorld) world).updateHearts(lives);
+	}
+
+	/**
 	 * Move this spider according to the WASD and direction keys that are pressed.
 	 *
 	 * @return whether or not this spider's location was changed
@@ -178,6 +185,7 @@ public class Spider extends AnimatedActor {
 	 */
 	private void die() {
 		lives--;
+		((GameWorld) getWorld()).updateHearts(lives);
 		// Initiate the dying animation
 		isDying = true;
 		velY = -18;

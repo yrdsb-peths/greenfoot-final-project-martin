@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.LinkedList;
 
 /**
  * The world in which the core Super Spider game runs.
@@ -18,6 +19,7 @@ public class GameWorld extends World {
 	private SimpleTimer timer;
 	private SimpleTimer sprayTimer;
 	private Label timerLabel;
+	private LinkedList<Heart> hearts;
 
 	/**
 	 * Create a new game world.
@@ -25,10 +27,11 @@ public class GameWorld extends World {
 	public GameWorld() {
 		// Create a new world with 600x400 cells with a cell size of 1x1 pixels.
 		super(600, 400, 1, false);
-		setPaintOrder(Button.class, Label.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
+		setPaintOrder(Button.class, Label.class, Heart.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
 		GreenfootImage image = getBackground();
 		image.setColor(new Color(128, 128, 128));
 		image.fill();
+		hearts = new LinkedList<Heart>();
 		addObject(new Spider(), 300, 200);
 		sprayTimer = new SimpleTimer();
 		createInitialWeb();
@@ -70,6 +73,23 @@ public class GameWorld extends World {
 		removeObject(coin);
 		score++;
 		scoreLabel.setValue(score);
+	}
+
+	/**
+	 * Place some number of hearts on screen.
+	 *
+	 * @param count the number of hearts to add
+	 */
+	public void updateHearts(int count) {
+		for (Heart heart : hearts) {
+			removeObject(heart);
+		}
+		hearts.clear();
+		for (int i = 0; i < count; i++) {
+			Heart heart = new Heart();
+			addObject(heart, 50, 150 + i * 75);
+			hearts.add(heart);
+		}
 	}
 
 	/**

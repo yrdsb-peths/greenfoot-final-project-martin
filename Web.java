@@ -51,7 +51,7 @@ public class Web extends Actor {
 		image.scale(1, 1);
 		setImage(image);
 		timer = new SimpleTimer();
-		webs.add(this);
+		webs.addLast(this);
 	}
 
 	/**

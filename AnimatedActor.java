@@ -12,18 +12,11 @@ public abstract class AnimatedActor extends Actor {
 	private GreenfootImage[] frames;
 	private int index;
 	private int delay = DEFAULT_FRAME_DELAY;
-	private SimpleTimer timer;
+	private SimpleTimer timer = new SimpleTimer();
 
 	// Precise location for fine movement
 	private double x;
 	private double y;
-
-	/**
-	 * Create a new animated actor.
-	 */
-	public AnimatedActor() {
-		timer = new SimpleTimer();
-	}
 
 	/**
 	 * Set this actor's animation frame delay.

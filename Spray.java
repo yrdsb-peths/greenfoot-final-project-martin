@@ -10,8 +10,8 @@ public class Spray extends AnimatedActor {
 	private static final int LIFESPAN = 5000;
 	private static final int GAS_INTERVAL = 750;
 
-	private SimpleTimer timer;
-	private SimpleTimer gasTimer;
+	private SimpleTimer timer = new SimpleTimer();
+	private SimpleTimer gasTimer = new SimpleTimer();
 	private boolean isMovingIn;
 	private int targetX;
 	private int targetY;
@@ -25,8 +25,6 @@ public class Spray extends AnimatedActor {
 	public Spray() {
 		loadImages();
 		setAnimation(images);
-		timer = new SimpleTimer();
-		gasTimer = new SimpleTimer();
 	}
 
 	/**

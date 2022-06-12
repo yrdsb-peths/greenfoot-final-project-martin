@@ -15,11 +15,11 @@ public class GameWorld extends World {
 	private int dragY;
 
 	private int score = 0;
-	private Label scoreLabel;
-	private SimpleTimer timer;
-	private SimpleTimer sprayTimer;
-	private Label timerLabel;
-	private LinkedList<Heart> hearts;
+	private Label scoreLabel = new Label(score, 50);
+	private SimpleTimer timer = new SimpleTimer();
+	private SimpleTimer sprayTimer = new SimpleTimer();
+	private Label timerLabel = new Label(0, 50);
+	private LinkedList<Heart> hearts = new LinkedList<Heart>();
 
 	/**
 	 * Create a new game world.
@@ -31,15 +31,9 @@ public class GameWorld extends World {
 		GreenfootImage image = getBackground();
 		image.setColor(new Color(128, 128, 128));
 		image.fill();
-		hearts = new LinkedList<Heart>();
 		addObject(new Spider(), 300, 200);
-		sprayTimer = new SimpleTimer();
 		createInitialWeb();
-		// Initialize score, timer, and their labels
-		scoreLabel = new Label(score, 50);
 		addObject(scoreLabel, 25, 25);
-		timer = new SimpleTimer();
-		timerLabel = new Label(0, 50);
 		addObject(timerLabel, 550, 25);
 	}
 

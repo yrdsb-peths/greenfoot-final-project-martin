@@ -27,7 +27,7 @@ public class Web extends Actor {
 	private int startY;
 	private boolean isLockedIn = false;
 	private boolean isFading = false;
-	private SimpleTimer timer;
+	private SimpleTimer timer = new SimpleTimer();
 	private int lifespan;
 
 	/**
@@ -50,7 +50,6 @@ public class Web extends Actor {
 		GreenfootImage image = new GreenfootImage(notlockedImage);
 		image.scale(1, 1);
 		setImage(image);
-		timer = new SimpleTimer();
 		webs.addLast(this);
 	}
 

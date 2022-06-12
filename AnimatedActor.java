@@ -7,10 +7,11 @@ import greenfoot.*;
  * @version June 2022
  */
 public abstract class AnimatedActor extends Actor {
-	private static final int FRAME_DELAY = 250;
+	public static final int DEFAULT_FRAME_DELAY = 250;
 
 	private GreenfootImage[] frames;
 	private int index;
+	private int delay = DEFAULT_FRAME_DELAY;
 	private SimpleTimer timer;
 
 	// Precise location for fine movement
@@ -25,6 +26,15 @@ public abstract class AnimatedActor extends Actor {
 	}
 
 	/**
+	 * Set this actor's animation frame delay.
+	 *
+	 * @param delay the number of milliseconds to delay between each animation frame
+	 */
+	protected void setFrameDelay(int delay) {
+		this.delay = delay;
+	}
+
+	/**
 	 * Set this actor's animation to an array of animation frames.
 	 *
 	 * @param frames the array of animation frames to use
@@ -33,6 +43,13 @@ public abstract class AnimatedActor extends Actor {
 		this.frames = frames;
 		index = 0;
 		updateAnimationFrame();
+	}
+
+	/**
+	 * Return the array of animation frames that this actor is currently using.
+	 */
+	protected GreenfootImage[] getAnimation() {
+		return frames;
 	}
 
 	/**
@@ -52,12 +69,12 @@ public abstract class AnimatedActor extends Actor {
 	}
 
 	/**
-	 * Advance this actors's animation and update its image accordingly.
+	 * Advance this actor's animation and update its image accordingly.
 	 *
 	 * @return true if the animation was advanced, false otherwise
 	 */
 	protected boolean updateAnimation() {
-		if (timer.millisElapsed() < FRAME_DELAY) {
+		if (timer.millisElapsed() < delay) {
 			return false;
 		}
 		// Advance animation frame

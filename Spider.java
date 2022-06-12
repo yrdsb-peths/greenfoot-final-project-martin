@@ -8,9 +8,12 @@ import greenfoot.*;
  */
 public class Spider extends AnimatedActor {
 	private static final int SPEED = 2;
+	private static final int IDLE_FRAME_DELAY = AnimatedActor.DEFAULT_FRAME_DELAY;
+	private static final int WALK_FRAME_DELAY = 75;
 
 	private static boolean hasLoadedImages = false;
 	private static final GreenfootImage[] imagesIdle = new GreenfootImage[2];
+	private static final GreenfootImage[] imagesWalk = new GreenfootImage[4];
 
 	private boolean isFacingRight = false;
 	private boolean wasFacingRight = false;
@@ -38,13 +41,18 @@ public class Spider extends AnimatedActor {
 		for (int i = 0; i < imagesIdle.length; i++) {
 			imagesIdle[i] = new GreenfootImage("images/spider-idle-" + i + ".png");
 		}
+		for (int i = 0; i < imagesWalk.length; i++) {
+			imagesWalk[i] = new GreenfootImage("images/spider-walk-" + i + ".png");
+		}
 		hasLoadedImages = true;
 	}
 
 	/**
 	 * Move this spider according to the WASD and direction keys that are pressed.
+	 *
+	 * @return whether or not this spider's location was changed
 	 */
-	private void updateLocation() {
+	private boolean updateLocation() {
 		int dx = 0;
 		int dy = 0;
 		if (Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("left")) {
@@ -59,19 +67,21 @@ public class Spider extends AnimatedActor {
 		if (Greenfoot.isKeyDown("s") || Greenfoot.isKeyDown("down")) {
 			dy += SPEED;
 		}
-		// Determine whether or not this movement is valid; whether or not there is a web to move on
-		int oldX = getX();
-		int oldY = getY();
-		setLocation(oldX + dx, oldY + dy);
-		if (!isOnWeb()) {
-			// Check if movement can be done on a single axis instead; only X
-			setLocation(oldX + dx, oldY);
+		if (dx != 0 || dy != 0) {
+			// Determine whether or not this movement is valid; whether or not there is a web to move on
+			int oldX = getX();
+			int oldY = getY();
+			setLocation(oldX + dx, oldY + dy);
 			if (!isOnWeb()) {
-				// Can't move on the X axis; only Y
-				setLocation(oldX, oldY + dy);
+				// Check if movement can be done on a single axis instead; only X
+				setLocation(oldX + dx, oldY);
 				if (!isOnWeb()) {
-					// Can't move on either axis, reset
-					setLocation(oldX, oldY);
+					// Can't move on the X axis; only Y
+					setLocation(oldX, oldY + dy);
+					if (!isOnWeb()) {
+						// Can't move on either axis, reset
+						setLocation(oldX, oldY);
+					}
 				}
 			}
 		}
@@ -82,6 +92,7 @@ public class Spider extends AnimatedActor {
 		} else if (dx < 0) {
 			isFacingRight = false;
 		}
+		return dx != 0 || dy != 0;
 	}
 
 	/**
@@ -145,7 +156,15 @@ public class Spider extends AnimatedActor {
 			updateDyingAnimation();
 			return;
 		}
-		updateLocation();
+		boolean wasMoved = updateLocation();
+		// Use the appropriate animation: if this spider was just moved, use the walk animation, but if not, use the idle animation
+		if (wasMoved && getAnimation() != imagesWalk) {
+			setAnimation(imagesWalk);
+			setFrameDelay(WALK_FRAME_DELAY);
+		} else if (!wasMoved && getAnimation() != imagesIdle) {
+			setAnimation(imagesIdle);
+			setFrameDelay(IDLE_FRAME_DELAY);
+		}
 		collectCoins();
 		updateAnimation();
 		if (!isOnWeb()) {

@@ -19,7 +19,6 @@ public class GameWorld extends World {
 	private SimpleTimer timer = new SimpleTimer();
 	private SimpleTimer sprayTimer = new SimpleTimer();
 	private Label timerLabel = new Label(0, 50);
-	private LinkedList<Heart> hearts = new LinkedList<Heart>();
 
 	/**
 	 * Create a new game world.
@@ -75,14 +74,13 @@ public class GameWorld extends World {
 	 * @param count the number of hearts to add
 	 */
 	public void updateHearts(int count) {
-		for (Heart heart : hearts) {
+		// Remove all existing hearts
+		for (Heart heart : getObjects(Heart.class)) {
 			removeObject(heart);
 		}
-		hearts.clear();
+		// Add new hearts in a vertical line
 		for (int i = 0; i < count; i++) {
-			Heart heart = new Heart();
-			addObject(heart, 50, 150 + i * 75);
-			hearts.add(heart);
+			addObject(new Heart(), 50, 150 + i * 75);
 		}
 	}
 

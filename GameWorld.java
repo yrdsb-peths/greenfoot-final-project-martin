@@ -1,5 +1,4 @@
 import greenfoot.*;
-import java.util.LinkedList;
 
 /**
  * The world in which the core Super Spider game runs.
@@ -8,11 +7,9 @@ import java.util.LinkedList;
  * @version May 2022
  */
 public class GameWorld extends World {
-	private static final int MAX_WEB_COUNT = 3;
 	private static final int SPRAY_INTERVAL = 10000;
 
 	private Web currentWeb = null;
-	private LinkedList<Web> webs;
 	private int dragX;
 	private int dragY;
 
@@ -34,7 +31,6 @@ public class GameWorld extends World {
 		image.fill();
 		addObject(new Spider(), 300, 200);
 		sprayTimer = new SimpleTimer();
-		webs = new LinkedList<Web>();
 		createInitialWeb();
 		// Initialize score, timer, and their labels
 		scoreLabel = new Label(score, 50);
@@ -63,21 +59,6 @@ public class GameWorld extends World {
 	private void addWeb(int x, int y) {
 		currentWeb = new Web(x, y);
 		addObject(currentWeb, 0, 0);
-		// Prevent the player from making unlimited webs; remove the oldest after reaching the max
-		if (webs.size() >= MAX_WEB_COUNT) {
-			fadeWebAway(webs.getFirst());
-		}
-		webs.add(currentWeb);
-	}
-
-	/**
-	 * Start fading a web away and remove it from this world's list of webs.
-	 *
-	 * @param web the web to fade away
-	 */
-	public void fadeWebAway(Web web) {
-		webs.remove(web);
-		web.fadeAway();
 	}
 
 	/**

@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.LinkedList;
 
 /**
  * A spider web which the Spider may walk on
@@ -7,6 +8,7 @@ import greenfoot.*;
  * @version June 2022
  */
 public class Web extends Actor {
+	private static final int MAX_WEB_COUNT = 3;
 	// Number of milliseconds that a web will exist for after being locked in
 	private static final int MIN_LIFESPAN = 1000;
 	private static final int MAX_LIFESPAN = 5000;
@@ -14,6 +16,8 @@ public class Web extends Actor {
 	private static final int LARGE_AREA = 600 * 400;
 	// Number of steps to decrease 'transparency' (really opacity) each act cycle while fading away
 	private static final int FADE_INTERVAL = 4;
+
+	private static LinkedList<Web> webs = new LinkedList<Web>();
 
 	private static GreenfootImage notlockedImage;
 	private static GreenfootImage lockedImage;
@@ -47,6 +51,7 @@ public class Web extends Actor {
 		image.scale(1, 1);
 		setImage(image);
 		timer = new SimpleTimer();
+		webs.add(this);
 	}
 
 	/**
@@ -77,6 +82,11 @@ public class Web extends Actor {
 	 * Lock in this web and start its timer.
 	 */
 	public void lockIn() {
+		// Remove the oldest web after reaching the max to prevent the player from creating unlimited webs
+		if (webs.size() >= MAX_WEB_COUNT) {
+			Web oldestWeb = webs.removeFirst();
+			oldestWeb.fadeAway();
+		}
 		// Switch to the locked-in image
 		GreenfootImage image = new GreenfootImage(lockedImage);
 		GreenfootImage currentImage = getImage();

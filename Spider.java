@@ -8,6 +8,7 @@ import greenfoot.*;
  */
 public class Spider extends AnimatedActor {
 	private static final int SPEED = 2;
+	private static final int HIT_RADIUS = 50;
 	private static final int IDLE_FRAME_DELAY = AnimatedActor.DEFAULT_FRAME_DELAY;
 	private static final int WALK_FRAME_DELAY = 75;
 
@@ -167,7 +168,7 @@ public class Spider extends AnimatedActor {
 		}
 		collectCoins();
 		updateAnimation();
-		if (!isOnWeb()) {
+		if (!isOnWeb() || getObjectsInRange(HIT_RADIUS, Gas.class).size() != 0) {
 			die();
 		}
 	}

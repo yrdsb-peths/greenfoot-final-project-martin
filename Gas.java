@@ -44,7 +44,12 @@ public class Gas extends AnimatedActor {
 	 * Initialize this gas's location and rotation when added to a world.
 	 */
 	protected void addedToWorld(World world) {
-		setLocation(spray.getX(), spray.getY());
+		// Set the location of this gas to the location of the spray's nozzle, which is 118.1 pixels away from the spray's centre at 45.34 degrees
+		int sprayRotation = spray.getRotation();
+		int xOffset = (int) (Math.cos(Math.toRadians(sprayRotation - 45.34)) * 118.1);
+		int yOffset = (int) (Math.sin(Math.toRadians(sprayRotation - 45.34)) * 118.1);
+		setLocation(spray.getX() + xOffset, spray.getY() + yOffset);
+		// Set rotation to a random angle relative to the rotation of the spray
 		int angleOffset = Greenfoot.getRandomNumber(ANGLE_RANGE) - ANGLE_RANGE / 2;
 		setRotation(spray.getRotation() + angleOffset);
 	}

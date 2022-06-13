@@ -10,6 +10,7 @@ import java.util.LinkedList;
 public class GameWorld extends World {
 	private static final int SPRAY_INTERVAL = 10000;
 
+	private Spider spider;
 	private Web currentWeb = null;
 	private int dragX;
 	private int dragY;
@@ -26,14 +27,22 @@ public class GameWorld extends World {
 	public GameWorld() {
 		// Create a new world with 600x400 cells with a cell size of 1x1 pixels.
 		super(600, 400, 1, false);
-		setPaintOrder(Button.class, Label.class, Heart.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
+		setPaintOrder(Button.class, Label.class, Heart.class, Glass.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
 		GreenfootImage image = getBackground();
 		image.setColor(new Color(128, 128, 128));
 		image.fill();
-		addObject(new Spider(), 300, 200);
+		spider = new Spider();
+		addObject(spider, 300, 200);
 		createInitialWeb();
 		addObject(scoreLabel, 25, 25);
 		addObject(timerLabel, 550, 25);
+	}
+
+	/**
+	 * Return this game's spider.
+	 */
+	public Spider getSpider() {
+		return spider;
 	}
 
 	/**

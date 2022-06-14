@@ -16,6 +16,7 @@ public class GameWorld extends World {
 	private int dragX;
 	private int dragY;
 
+	private boolean isOver = false;
 	private int score = 0;
 	private Label scoreLabel = new Label(score, 50);
 	private SimpleTimer timer = new SimpleTimer();
@@ -29,7 +30,7 @@ public class GameWorld extends World {
 	public GameWorld(GameMode mode) {
 		// Create a new world with 600x400 cells with a cell size of 1x1 pixels.
 		super(600, 400, 1, false);
-		setPaintOrder(Button.class, Label.class, Heart.class, Glass.class, GlassShadow.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
+		setPaintOrder(Button.class, Label.class, Darken.class, Heart.class, Glass.class, GlassShadow.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
 		GreenfootImage image = getBackground();
 		image.setColor(new Color(128, 128, 128));
 		image.fill();
@@ -99,9 +100,30 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Create webs when the mouse is dragged.
+	 * End this game and show the game over screen.
+	 */
+	public void gameOver() {
+		isOver = true;
+		addObject(new Darken(), 0, 0);
+		Label gameOverLabel = new Label("Game Over", 100);
+		addObject(gameOverLabel, 300, 200);
+	}
+
+	/**
+	 * Return whether or not this game is over.
+	 */
+	public boolean isOver() {
+		return isOver;
+	}
+
+	/**
+	 * Update this game.
 	 */
 	public void act() {
+		if (isOver) {
+			return;
+		}
+
 		// Create new webs when the mouse is pressed
 		if (Greenfoot.mousePressed(null)) {
 			MouseInfo mouse = Greenfoot.getMouseInfo();

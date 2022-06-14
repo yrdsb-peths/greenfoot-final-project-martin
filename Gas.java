@@ -58,6 +58,9 @@ public class Gas extends AnimatedActor {
 	 * Update this gas.
 	 */
 	public void act() {
+		if (((GameWorld) getWorld()).isOver()) {
+			return;
+		}
 		move(1);
 		updateAnimation();
 	}

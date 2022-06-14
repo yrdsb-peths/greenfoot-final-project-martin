@@ -65,6 +65,10 @@ public class Spray extends AnimatedActor {
 	 * Update this spray.
 	 */
 	public void act() {
+		if (((GameWorld) getWorld()).isOver()) {
+			return;
+		}
+
 		if (isMovingIn) {
 			// Current objective: move to the target position
 			if (Math.abs(getX() - targetX) < 3 && Math.abs(getY() - targetY) < 3) {

@@ -172,10 +172,15 @@ public class Spider extends AnimatedActor {
 	 * Update this spider.
 	 */
 	public void act() {
+		if (((GameWorld) getWorld()).isOver()) {
+			return;
+		}
+
 		if (isDying) {
 			updateDyingAnimation();
 			return;
 		}
+
 		boolean wasMoved = updateLocation();
 		// Use the appropriate animation: if this spider was just moved, use the walk animation, but if not, use the idle animation
 		if (wasMoved && getAnimation() != imagesWalk) {
@@ -210,14 +215,15 @@ public class Spider extends AnimatedActor {
 		velY++;
 		int y = getY() + velY;
 		if (y >= 450) {
+			GameWorld world = (GameWorld) getWorld();
 			if (lives <= 0) {
 				// Out of lives, game is over
-				Greenfoot.setWorld(new GameOverWorld());
+				world.gameOver();
 			} else {
 				// Reset to start a new life
 				setLocation(300, 200);
 				isDying = false;
-				((GameWorld) getWorld()).createInitialWeb();
+				world.createInitialWeb();
 			}
 		} else {
 			setLocation(getX(), y);

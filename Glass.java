@@ -62,6 +62,10 @@ public class Glass extends AnimatedActor {
 	 * Update this glass.
 	 */
 	public void act() {
+		if (((GameWorld) getWorld()).isOver()) {
+			return;
+		}
+
 		Spider spider = ((GameWorld) getWorld()).getSpider();
 		switch (state) {
 			case FOLLOWING:

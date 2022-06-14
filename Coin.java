@@ -42,6 +42,9 @@ public class Coin extends AnimatedActor {
 	 * Check if it is time to fade or remove this coin.
 	 */
 	public void act() {
+		if (((GameWorld) getWorld()).isOver()) {
+			return;
+		}
 		updateAnimation();
 		if (timer.millisElapsed() >= LIFESPAN) {
 			// Gradually decrease the image 'transparency' (really opacity) before removing this coin

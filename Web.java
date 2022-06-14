@@ -128,6 +128,10 @@ public class Web extends Actor {
 	 * Check if it is time to fade or remove this web after being locked in.
 	 */
 	public void act() {
+		if (((GameWorld) getWorld()).isOver()) {
+			return;
+		}
+
 		if (isLockedIn && (isFading || timer.millisElapsed() >= lifespan)) {
 			// Gradually decrease the image 'transparency' (really opacity) before removing this web
 			GreenfootImage image = getImage();

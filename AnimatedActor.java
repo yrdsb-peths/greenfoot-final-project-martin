@@ -81,6 +81,9 @@ public abstract class AnimatedActor extends Actor {
 	 * Update this animated actor.
 	 */
 	public void act() {
+		if (((GameWorld) getWorld()).isOver()) {
+			return;
+		}
 		updateAnimation();
 	}
 

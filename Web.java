@@ -121,14 +121,14 @@ public class Web extends Actor {
 		GreenfootImage image = getImage();
 		double a = Math.pow(x - getX(), 2) / Math.pow(image.getWidth() / 2, 2);
 		double b = Math.pow(y - getY(), 2) / Math.pow(image.getHeight() / 2, 2);
-		return a + b < 1;
+		return a + b < 1.0;
 	}
 
 	/**
 	 * Check if it is time to fade or remove this web after being locked in.
 	 */
 	public void act() {
-		if (isLockedIn && (isFading || timer.millisElapsed() > lifespan)) {
+		if (isLockedIn && (isFading || timer.millisElapsed() >= lifespan)) {
 			// Gradually decrease the image 'transparency' (really opacity) before removing this web
 			GreenfootImage image = getImage();
 			int newTransparency = image.getTransparency() - FADE_INTERVAL;

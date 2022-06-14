@@ -80,7 +80,7 @@ public class Spray extends AnimatedActor {
 				getWorld().removeObject(this);
 			} else if (time >= LIFESPAN) {
 				move(-1);
-			} else if (gasTimer.millisElapsed() > GAS_INTERVAL) {
+			} else if (gasTimer.millisElapsed() >= GAS_INTERVAL) {
 				getWorld().addObject(new Gas(this), 0, 0);
 				gasTimer.mark();
 			}

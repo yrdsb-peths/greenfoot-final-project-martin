@@ -51,10 +51,10 @@ public class Button extends Actor {
 		setImage(image);
 	}
 
-    /**
-     * Updates this button's image if hovered and performs its action if clicked.
-     */
-    public void act() {
+	/**
+	 * Updates this button's image if hovered and performs its action if clicked.
+	 */
+	public void act() {
 		MouseInfo mouse = Greenfoot.getMouseInfo();
 		if (mouse != null) {
 			int mouseX = mouse.getX();
@@ -72,8 +72,8 @@ public class Button extends Actor {
 				createImage();
 			}
 		}
-        if (Greenfoot.mouseClicked(this)) {
+		if (Greenfoot.mouseClicked(this)) {
 			callback.run();
 		}
-    }
+	}
 }

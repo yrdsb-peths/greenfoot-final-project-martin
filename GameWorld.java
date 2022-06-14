@@ -115,7 +115,7 @@ public class GameWorld extends World {
 		}
 
 		// Add new sprays every once in a while
-		if (sprayTimer.millisElapsed() > SPRAY_INTERVAL) {
+		if (sprayTimer.millisElapsed() >= SPRAY_INTERVAL) {
 			addObject(new Spray(), 0, 0);
 			sprayTimer.mark();
 		}

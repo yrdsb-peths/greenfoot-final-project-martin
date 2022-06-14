@@ -9,6 +9,7 @@ import java.util.LinkedList;
  */
 public class GameWorld extends World {
 	private static final int SPRAY_INTERVAL = 10000;
+	private static final int COIN_INTERVAL = 10000;
 
 	private Spider spider;
 	private Web currentWeb = null;
@@ -19,6 +20,7 @@ public class GameWorld extends World {
 	private Label scoreLabel = new Label(score, 50);
 	private SimpleTimer timer = new SimpleTimer();
 	private SimpleTimer sprayTimer = new SimpleTimer();
+	private SimpleTimer coinTimer = new SimpleTimer();
 	private Label timerLabel = new Label(0, 50);
 
 	/**
@@ -118,6 +120,13 @@ public class GameWorld extends World {
 		if (sprayTimer.millisElapsed() >= SPRAY_INTERVAL) {
 			addObject(new Spray(), 0, 0);
 			sprayTimer.mark();
+		}
+		// Add new coins every once in a while
+		if (coinTimer.millisElapsed() >= COIN_INTERVAL) {
+			int x = Greenfoot.getRandomNumber(getWidth());
+			int y = Greenfoot.getRandomNumber(getHeight());
+			addObject(new Coin(), x, y);
+			coinTimer.mark();
 		}
 
 		// Draw time

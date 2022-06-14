@@ -10,6 +10,8 @@ import java.util.LinkedList;
 public class GameWorld extends World {
 	private static final int SPRAY_INTERVAL = 10000;
 	private static final int COIN_INTERVAL = 10000;
+	private static final GreenfootSound backgroundMusicIntro = new GreenfootSound("sounds/new-super-mario-bros-wii-battle-intro.mp3");
+	private static final GreenfootSound backgroundMusic = new GreenfootSound("sounds/new-super-mario-bros-wii-battle.mp3");
 
 	private Spider spider;
 	private Web currentWeb = null;
@@ -42,6 +44,7 @@ public class GameWorld extends World {
 		}
 		addObject(scoreLabel, 25, 25);
 		addObject(timerLabel, 550, 25);
+		backgroundMusicIntro.play();
 	}
 
 	/**
@@ -164,5 +167,10 @@ public class GameWorld extends World {
 			seconds = "0" + seconds;
 		}
 		timerLabel.setValue(minutes + ":" + seconds);
+
+		// Play the looping background music after the intro is finished
+		if (!backgroundMusicIntro.isPlaying()) {
+			backgroundMusic.playLoop();
+		}
 	}
 }

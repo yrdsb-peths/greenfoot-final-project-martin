@@ -34,6 +34,7 @@ public class GameWorld extends World {
 		spider = new Spider();
 		addObject(spider, 300, 200);
 		createInitialWeb();
+		addObject(new Glass(), 650, 450);
 		addObject(scoreLabel, 25, 25);
 		addObject(timerLabel, 550, 25);
 	}

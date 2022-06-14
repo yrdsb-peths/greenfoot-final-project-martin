@@ -106,7 +106,9 @@ public class GameWorld extends World {
 		isOver = true;
 		addObject(new Darken(), 0, 0);
 		Label gameOverLabel = new Label("Game Over", 100);
-		addObject(gameOverLabel, 300, 200);
+		addObject(gameOverLabel, 300, 150);
+		addObject(new Button("Easy", 50, Color.BLACK, new Color(160, 255, 160), new Color(144, 224, 144), new EasyCallback()), 200, 300);
+		addObject(new Button("Hard", 50, Color.BLACK, new Color(255, 160, 160), new Color(224, 144, 144), new HardCallback()), 400, 300);
 	}
 
 	/**

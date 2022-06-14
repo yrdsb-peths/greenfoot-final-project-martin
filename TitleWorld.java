@@ -15,9 +15,9 @@ public class TitleWorld extends World {
 		super(600, 400, 1);
 		Label titleLabel = new Label("Super Spider", 100);
 		titleLabel.setFillColor(Color.BLACK);
-		addObject(titleLabel, 300, 100);
-		addObject(new Button("Easy", 50, Color.BLACK, new Color(160, 255, 160), new Color(144, 224, 144), new EasyCallback()), 300, 200);
-		addObject(new Button("Hard", 50, Color.BLACK, new Color(255, 160, 160), new Color(224, 144, 144), new HardCallback()), 300, 300);
+		addObject(titleLabel, 300, 150);
+		addObject(new Button("Easy", 50, Color.BLACK, new Color(160, 255, 160), new Color(144, 224, 144), new EasyCallback()), 200, 300);
+		addObject(new Button("Hard", 50, Color.BLACK, new Color(255, 160, 160), new Color(224, 144, 144), new HardCallback()), 400, 300);
 	}
 }
 

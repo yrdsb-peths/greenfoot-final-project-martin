@@ -26,7 +26,7 @@ public class GameWorld extends World {
 	/**
 	 * Create a new game world.
 	 */
-	public GameWorld() {
+	public GameWorld(GameMode mode) {
 		// Create a new world with 600x400 cells with a cell size of 1x1 pixels.
 		super(600, 400, 1, false);
 		setPaintOrder(Button.class, Label.class, Heart.class, Glass.class, GlassShadow.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
@@ -36,7 +36,9 @@ public class GameWorld extends World {
 		spider = new Spider();
 		addObject(spider, 300, 200);
 		createInitialWeb();
-		addObject(new Glass(), 650, 450);
+		if (mode == GameMode.HARD) {
+			addObject(new Glass(), 650, 450);
+		}
 		addObject(scoreLabel, 25, 25);
 		addObject(timerLabel, 550, 25);
 	}

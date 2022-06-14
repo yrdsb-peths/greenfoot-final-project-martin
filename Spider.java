@@ -80,12 +80,13 @@ public class Spider extends AnimatedActor {
 			int oldX = getX();
 			int oldY = getY();
 			setLocation(oldX + dx, oldY + dy);
-			if (!isOnWeb()) {
+			if (!isOnWeb() || isOutOfBounds()) {
 				// Check if movement can be done on a single axis instead; only X
 				setLocation(oldX + dx, oldY);
-				if (!isOnWeb()) {
+				if (!isOnWeb() || isOutOfBounds()) {
 					// Can't move on the X axis; only Y
 					setLocation(oldX, oldY + dy);
+					if (!isOnWeb() || isOutOfBounds()) {
 						// Can't move on either axis, reset
 						setLocation(oldX, oldY);
 					}
@@ -116,6 +117,18 @@ public class Spider extends AnimatedActor {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Check if this spider is currently out of bounds.
+	 *
+	 * @return whether or not the spider's position lies outside of its world
+	 */
+	private boolean isOutOfBounds() {
+		int x = getX();
+		int y = getY();
+		World world = getWorld();
+		return x < 0 || x >= world.getWidth() || y < 0 || y >= world.getHeight();
 	}
 
 	/**

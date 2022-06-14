@@ -62,9 +62,9 @@ public class Glass extends AnimatedActor {
 	 * Update this glass.
 	 */
 	public void act() {
+		Spider spider = ((GameWorld) getWorld()).getSpider();
 		switch (state) {
 			case FOLLOWING:
-				Spider spider = ((GameWorld) getWorld()).getSpider();
 				int spiderX = spider.getX();
 				int spiderY = spider.getY();
 				if (getX() == spiderX && getY() + SHADOW_OFFSET == spiderY) {
@@ -94,8 +94,12 @@ public class Glass extends AnimatedActor {
 
 			case MOVING_DOWN:
 				setLocation(getX(), getY() + DOWN_SPEED);
-				// Begin moving back to the position before capture
 				if (getY() >= targetY) {
+					// Kill the spider if it was under this glass
+					if (getOneObjectAtOffset(0, 70, Spider.class) != null) {
+						spider.die();
+					}
+					// Begin moving back to the position before capture
 					state = State.RETURNING;
 				}
 				break;

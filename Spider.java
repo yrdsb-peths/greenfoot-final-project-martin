@@ -86,7 +86,6 @@ public class Spider extends AnimatedActor {
 				if (!isOnWeb()) {
 					// Can't move on the X axis; only Y
 					setLocation(oldX, oldY + dy);
-					if (!isOnWeb()) {
 						// Can't move on either axis, reset
 						setLocation(oldX, oldY);
 					}
@@ -183,7 +182,7 @@ public class Spider extends AnimatedActor {
 	/**
 	 * Remove a life from this spider.
 	 */
-	private void die() {
+	public void die() {
 		lives--;
 		((GameWorld) getWorld()).updateHearts(lives);
 		// Initiate the dying animation

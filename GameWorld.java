@@ -38,6 +38,8 @@ public class GameWorld extends World {
 	public GameWorld(GameMode mode) {
 		// Create a new world with 600x400 cells with a cell size of 1x1 pixels.
 		super(600, 400, 1, false);
+		// Stop music if it was playing from a previous game
+		MUSIC_SOUND.stop();
 		setPaintOrder(Button.class, Label.class, Darken.class, Heart.class, Glass.class, GlassShadow.class, Gas.class, Spray.class, Spider.class, Coin.class, Web.class);
 		GreenfootImage image = getBackground();
 		image.setColor(new Color(128, 128, 128));

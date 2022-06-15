@@ -164,8 +164,9 @@ public class Spider extends AnimatedActor {
 	 * Collect any coins that this spider is touching.
 	 */
 	private void collectCoins() {
+		GameWorld world = (GameWorld) getWorld();
 		for (Coin coin : getIntersectingObjects(Coin.class)) {
-			((GameWorld) getWorld()).collectCoin(coin);
+			world.collectCoin(coin);
 		}
 	}
 
@@ -193,13 +194,14 @@ public class Spider extends AnimatedActor {
 		}
 		collectCoins();
 		updateAnimation();
+		// Die if not on a web or touching gas
 		if (!isOnWeb() || getObjectsInRange(HIT_RADIUS, Gas.class).size() != 0) {
 			die();
 		}
 	}
 
 	/**
-	 * Remove a life from this spider.
+	 * Remove a life from this spider and start its dying animation.
 	 */
 	public void die() {
 		lives--;
@@ -214,6 +216,7 @@ public class Spider extends AnimatedActor {
 	 * Continue the animation of this spider's death.
 	 */
 	private void updateDyingAnimation() {
+		// Add gravity to y velocity
 		velY++;
 		int y = getY() + velY;
 		if (y >= 450) {

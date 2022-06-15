@@ -23,7 +23,7 @@ public class Glass extends AnimatedActor {
 	private int peakY;
 	// Y position to capture at
 	private int targetY;
-	// Y position to return to
+	// Y position to return to after capturing
 	private int returnY;
 
 	private static boolean hasLoadedImages = false;

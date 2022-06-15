@@ -48,8 +48,10 @@ public class Spray extends AnimatedActor {
 		int worldHeight = world.getHeight();
 		targetX = Greenfoot.getRandomNumber(worldWidth);
 		if (targetX < 50 || targetX > worldWidth - 50) {
+			// If on the left or right edges of the world, this spray can be placed anywhere on the y-axis
 			targetY = Greenfoot.getRandomNumber(worldHeight);
 		} else {
+			// If anywhere else on the x-axis, this spray can be placed on the top or bottom edges of the world
 			targetY = Greenfoot.getRandomNumber(50);
 			if (Greenfoot.getRandomNumber(2) == 0) {
 				targetY = worldHeight - targetY;
@@ -57,6 +59,7 @@ public class Spray extends AnimatedActor {
 		}
 		setLocation(targetX, targetY);
 		turnTowards(worldWidth / 2, worldHeight / 2);
+		// Start out of the world and move in
 		move(-200);
 		isMovingIn = true;
 	}
@@ -81,10 +84,13 @@ public class Spray extends AnimatedActor {
 			// Wait to spray, then move out of the world, then remove this spray
 			int time = timer.millisElapsed();
 			if (time >= LIFESPAN + 5000) {
+				// This spray has been moved outside of the world; remove it
 				getWorld().removeObject(this);
 			} else if (time >= LIFESPAN) {
+				// This spray has finished spraying; move it outside of the world
 				move(-1);
 			} else if (gasTimer.millisElapsed() >= GAS_INTERVAL) {
+				// Add a new gas every so often while spraying
 				getWorld().addObject(new Gas(this), 0, 0);
 				gasTimer.mark();
 			}

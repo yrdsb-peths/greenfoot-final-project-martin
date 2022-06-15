@@ -73,6 +73,9 @@ public class Web extends Actor {
 		setLocation(startX + width / 2, startY + height / 2);
 	}
 
+	/**
+	 * Return whether or not this web is locked in.
+	 */
 	public boolean isLockedIn() {
 		return isLockedIn;
 	}

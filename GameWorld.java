@@ -73,7 +73,7 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Create a new web and add it to this world and its list of webs.
+	 * Create a new web and add it to this world.
 	 *
 	 * @param x the x position of the new web
 	 * @param y the y position of the new web
@@ -84,7 +84,7 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Remove a coin from this world and increase the score.
+	 * Remove a coin from this world, increase the score, and play the sound effect.
 	 *
 	 * @param coin the coin to collect
 	 */
@@ -102,9 +102,7 @@ public class GameWorld extends World {
 	 */
 	public void updateHearts(int count) {
 		// Remove all existing hearts
-		for (Heart heart : getObjects(Heart.class)) {
-			removeObject(heart);
-		}
+		removeObjects(getObjects(Heart.class));
 		// Add new hearts in a vertical line
 		for (int i = 0; i < count; i++) {
 			addObject(new Heart(), 50, 150 + i * 75);
@@ -188,6 +186,7 @@ public class GameWorld extends World {
 	 */
 	public void stopped() {
 		music.pause();
+		// Don't display the paused screen if the game over screen is shown
 		if (!isOver) {
 			addObject(darken, 0, 0);
 			addObject(pausedLabel, 300, 200);

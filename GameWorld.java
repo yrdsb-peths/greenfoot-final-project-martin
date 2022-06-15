@@ -66,21 +66,10 @@ public class GameWorld extends World {
 	 * Create the web that the spider is to begin a life on.
 	 */
 	public void createInitialWeb() {
-		addWeb(200, 100);
-		currentWeb.drag(400, 300);
-		currentWeb.lockIn();
-		currentWeb = null;
-	}
-
-	/**
-	 * Create a new web and add it to this world.
-	 *
-	 * @param x the x position of the new web
-	 * @param y the y position of the new web
-	 */
-	private void addWeb(int x, int y) {
-		currentWeb = new Web(x, y);
-		addObject(currentWeb, 0, 0);
+		Web web = new Web(200, 100);
+		addObject(web, 0, 0);
+		web.drag(400, 300);
+		web.lockIn();
 	}
 
 	/**
@@ -150,7 +139,8 @@ public class GameWorld extends World {
 		// Create new webs when the mouse is pressed
 		if (Greenfoot.mousePressed(null)) {
 			MouseInfo mouse = Greenfoot.getMouseInfo();
-			addWeb(mouse.getX(), mouse.getY());
+			currentWeb = new Web(mouse.getX(), mouse.getY());
+			addObject(currentWeb, 0, 0);
 		}
 		// Update the current web while dragging the mouse
 		if (Greenfoot.mouseDragged(null)) {

@@ -11,6 +11,7 @@ public class Spider extends AnimatedActor {
 	private static final int HIT_RADIUS = 50;
 	private static final int IDLE_FRAME_DELAY = AnimatedActor.DEFAULT_FRAME_DELAY;
 	private static final int WALK_FRAME_DELAY = 75;
+	private static final GreenfootSound DEATH_SOUND = new GreenfootSound("sounds/new-super-mario-bros-u-death.mp3");
 
 	private static boolean hasLoadedImages = false;
 	private static final GreenfootImage[] imagesIdle = new GreenfootImage[2];
@@ -206,6 +207,7 @@ public class Spider extends AnimatedActor {
 		// Initiate the dying animation
 		isDying = true;
 		velY = -18;
+		DEATH_SOUND.play();
 	}
 
 	/**

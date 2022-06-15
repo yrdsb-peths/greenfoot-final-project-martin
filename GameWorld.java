@@ -12,6 +12,7 @@ public class GameWorld extends World {
 	private static final int COIN_INTERVAL = 10000;
 	private static final GreenfootSound MUSIC_INTRO_SOUND = new GreenfootSound("sounds/new-super-mario-bros-wii-battle-intro.mp3");
 	private static final GreenfootSound MUSIC_SOUND = new GreenfootSound("sounds/new-super-mario-bros-wii-battle.mp3");
+	private static final GreenfootSound COIN_SOUND = new GreenfootSound("sounds/new-super-mario-bros-wii-coin.mp3");
 
 	private Spider spider;
 	private Web currentWeb = null;
@@ -89,6 +90,7 @@ public class GameWorld extends World {
 		removeObject(coin);
 		score++;
 		scoreLabel.setValue(score);
+		COIN_SOUND.play();
 	}
 
 	/**

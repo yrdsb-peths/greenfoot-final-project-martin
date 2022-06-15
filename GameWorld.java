@@ -121,6 +121,18 @@ public class GameWorld extends World {
 	}
 
 	/**
+	 * Fade away all bad actors so that the spider isn't immediately killed again
+	 */
+	public void fadeAwayAllBad() {
+		for (Spray spray : getObjects(Spray.class)) {
+			spray.fadeAway();
+		}
+		for (Gas gas : getObjects(Gas.class)) {
+			gas.fadeAway();
+		}
+	}
+
+	/**
 	 * Return whether or not this game is over.
 	 */
 	public boolean isOver() {

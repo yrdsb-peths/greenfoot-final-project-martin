@@ -205,7 +205,9 @@ public class Spider extends AnimatedActor {
 	 */
 	public void die() {
 		lives--;
-		((GameWorld) getWorld()).updateHearts(lives);
+		GameWorld world = (GameWorld) getWorld();
+		world.updateHearts(lives);
+		world.fadeAwayAllBad();
 		// Initiate the dying animation
 		isDying = true;
 		velY = -18;

@@ -89,12 +89,13 @@ public class Spray extends AnimatedActor {
 			} else if (time >= LIFESPAN) {
 				// This spray has finished spraying; move it outside of the world
 				move(-1);
-			} else if (gasTimer.millisElapsed() >= GAS_INTERVAL) {
+			} else if (!isFading() && gasTimer.millisElapsed() >= GAS_INTERVAL) {
 				// Add a new gas every so often while spraying
 				getWorld().addObject(new Gas(this), 0, 0);
 				gasTimer.mark();
 			}
 		}
 		updateAnimation();
+		updateFade();
 	}
 }

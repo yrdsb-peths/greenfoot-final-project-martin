@@ -63,5 +63,6 @@ public class Gas extends AnimatedActor {
 		}
 		move(1);
 		updateAnimation();
+		updateFade();
 	}
 }

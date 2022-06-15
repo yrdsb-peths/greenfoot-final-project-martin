@@ -109,10 +109,17 @@ public abstract class AnimatedActor extends Actor {
 	}
 
 	/**
+	 * Return whether or not this animated actor is currently fading away.
+	 */
+	public boolean isFading() {
+		return willFade && fadeTimer.millisElapsed() >= lifespan;
+	}
+
+	/**
 	 * Fade this animated actor away and remove it after its lifespan has passed.
 	 */
 	protected void updateFade() {
-		if (!willFade || fadeTimer.millisElapsed() < lifespan) {
+		if (!isFading()) {
 			return;
 		}
 		// Gradually decrease the image 'transparency' (really opacity) before removing this actor

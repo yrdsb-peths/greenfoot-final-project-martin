@@ -16,8 +16,9 @@ public class TitleWorld extends World {
 		Label titleLabel = new Label("Super Spider", 100);
 		titleLabel.setFillColor(Color.BLACK);
 		addObject(titleLabel, 300, 150);
-		addObject(new Button("Easy", 50, Color.BLACK, new Color(160, 255, 160), new Color(144, 224, 144), new EasyCallback()), 200, 300);
-		addObject(new Button("Hard", 50, Color.BLACK, new Color(255, 160, 160), new Color(224, 144, 144), new HardCallback()), 400, 300);
+		addObject(new Button("Instructions", 50, Color.BLACK, new Color(160, 160, 255), new Color(144, 144, 224), new InstructionsCallback()), 175, 300);
+		addObject(new Button("Easy", 50, Color.BLACK, new Color(160, 255, 160), new Color(144, 224, 144), new EasyCallback()), 373, 300);
+		addObject(new Button("Hard", 50, Color.BLACK, new Color(255, 160, 160), new Color(224, 144, 144), new HardCallback()), 500, 300);
 	}
 }
 
@@ -36,5 +37,14 @@ class EasyCallback implements Callback {
 class HardCallback implements Callback {
 	public void run() {
 		Greenfoot.setWorld(new GameWorld(GameMode.HARD));
+	}
+}
+
+/**
+ * The callback for the instructions button, which displays game instructions.
+ */
+class InstructionsCallback implements Callback {
+	public void run() {
+		Greenfoot.setWorld(new InstructionsWorld());
 	}
 }

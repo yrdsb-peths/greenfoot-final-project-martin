@@ -10,8 +10,8 @@ import java.util.LinkedList;
 public class GameWorld extends World {
 	private static final int SPRAY_INTERVAL = 10000;
 	private static final int COIN_INTERVAL = 10000;
-	private static final GreenfootSound backgroundMusicIntro = new GreenfootSound("sounds/new-super-mario-bros-wii-battle-intro.mp3");
-	private static final GreenfootSound backgroundMusic = new GreenfootSound("sounds/new-super-mario-bros-wii-battle.mp3");
+	private static final GreenfootSound MUSIC_INTRO_SOUND = new GreenfootSound("sounds/new-super-mario-bros-wii-battle-intro.mp3");
+	private static final GreenfootSound MUSIC_SOUND = new GreenfootSound("sounds/new-super-mario-bros-wii-battle.mp3");
 
 	private Spider spider;
 	private Web currentWeb = null;
@@ -25,6 +25,11 @@ public class GameWorld extends World {
 	private SimpleTimer sprayTimer = new SimpleTimer();
 	private SimpleTimer coinTimer = new SimpleTimer();
 	private Label timerLabel = new Label(0, 50);
+
+	private GreenfootSound music = MUSIC_INTRO_SOUND;
+
+	private Darken darken = new Darken();
+	private Label pausedLabel = new Label("Paused", 100);
 
 	/**
 	 * Create a new game world.
@@ -44,7 +49,7 @@ public class GameWorld extends World {
 		}
 		addObject(scoreLabel, 25, 25);
 		addObject(timerLabel, 550, 25);
-		backgroundMusicIntro.play();
+		music.play();
 	}
 
 	/**
@@ -107,9 +112,8 @@ public class GameWorld extends World {
 	 */
 	public void gameOver() {
 		isOver = true;
-		addObject(new Darken(), 0, 0);
-		Label gameOverLabel = new Label("Game Over", 100);
-		addObject(gameOverLabel, 300, 150);
+		addObject(darken, 0, 0);
+		addObject(new Label("Game Over", 100), 300, 150);
 		addObject(new Button("Easy", 50, Color.BLACK, new Color(160, 255, 160), new Color(144, 224, 144), new EasyCallback()), 200, 300);
 		addObject(new Button("Hard", 50, Color.BLACK, new Color(255, 160, 160), new Color(224, 144, 144), new HardCallback()), 400, 300);
 	}
@@ -169,8 +173,35 @@ public class GameWorld extends World {
 		timerLabel.setValue(minutes + ":" + seconds);
 
 		// Play the looping background music after the intro is finished
-		if (!backgroundMusicIntro.isPlaying()) {
-			backgroundMusic.playLoop();
+		if (!music.isPlaying()) {
+			music = MUSIC_SOUND;
+			music.playLoop();
+		}
+	}
+
+	/**
+	 * Pause the background music and display the paused screen.
+	 */
+	public void stopped() {
+		music.pause();
+		if (!isOver) {
+			addObject(darken, 0, 0);
+			addObject(pausedLabel, 300, 200);
+		}
+	}
+
+	/**
+	 * Resume the background music and remove the paused screen.
+	 */
+	public void started() {
+		if (music == MUSIC_INTRO_SOUND) {
+			music.play();
+		} else {
+			music.playLoop();
+		}
+		if (!isOver) {
+			removeObject(darken);
+			removeObject(pausedLabel);
 		}
 	}
 }

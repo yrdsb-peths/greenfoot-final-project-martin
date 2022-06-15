@@ -7,15 +7,13 @@ import java.util.LinkedList;
  * @author Martin Baldwin
  * @version June 2022
  */
-public class Web extends Actor {
+public class Web extends AnimatedActor {
 	private static final int MAX_WEB_COUNT = 3;
 	// Number of milliseconds that a web will exist for after being locked in
 	private static final int MIN_LIFESPAN = 1000;
 	private static final int MAX_LIFESPAN = 5000;
 	// Area of a web to be considered large
 	private static final int LARGE_AREA = 600 * 400;
-	// Number of steps to decrease 'transparency' (really opacity) each act cycle while fading away
-	private static final int FADE_INTERVAL = 4;
 
 	private static LinkedList<Web> webs = new LinkedList<Web>();
 
@@ -26,9 +24,6 @@ public class Web extends Actor {
 	private int startX;
 	private int startY;
 	private boolean isLockedIn = false;
-	private boolean isFading = false;
-	private SimpleTimer timer = new SimpleTimer();
-	private int lifespan;
 
 	/**
 	 * Create a new Web.
@@ -97,19 +92,13 @@ public class Web extends Actor {
 		image.scale(width, height);
 		setImage(image);
 		// Start timing the existence of this web
-		lifespan = (LARGE_AREA - width * height) * MAX_LIFESPAN / LARGE_AREA;
+		int lifespan = (LARGE_AREA - width * height) * MAX_LIFESPAN / LARGE_AREA;
 		if (lifespan < MIN_LIFESPAN) {
 			lifespan = MIN_LIFESPAN;
 		}
+		setLifespan(lifespan);
+		startLifespan();
 		isLockedIn = true;
-		timer.mark();
-	}
-
-	/**
-	 * Start fading this web away to remove it.
-	 */
-	public void fadeAway() {
-		isFading = true;
 	}
 
 	/**
@@ -128,23 +117,12 @@ public class Web extends Actor {
 	}
 
 	/**
-	 * Check if it is time to fade or remove this web after being locked in.
+	 * Update this web.
 	 */
 	public void act() {
 		if (((GameWorld) getWorld()).isOver()) {
 			return;
 		}
-
-		if (isLockedIn && (isFading || timer.millisElapsed() >= lifespan)) {
-			// Gradually decrease the image 'transparency' (really opacity) before removing this web
-			GreenfootImage image = getImage();
-			int newTransparency = image.getTransparency() - FADE_INTERVAL;
-			if (newTransparency <= 0) {
-				// Remove this web once it has become fully transparent
-				getWorld().removeObject(this);
-				return;
-			}
-			image.setTransparency(newTransparency);
-		}
+		updateFade();
 	}
 }

@@ -8,11 +8,17 @@ import greenfoot.*;
  */
 public abstract class AnimatedActor extends Actor {
 	public static final int DEFAULT_FRAME_DELAY = 250;
+	// Number of steps to decrease 'transparency' (really opacity) each act cycle while fading away
+	private static final int FADE_INTERVAL = 4;
 
 	private GreenfootImage[] frames;
 	private int index;
 	private int delay = DEFAULT_FRAME_DELAY;
+	private int lifespan;
+	private int transparency = 255;
+	private boolean willFade = false;
 	private SimpleTimer timer = new SimpleTimer();
+	private SimpleTimer fadeTimer = new SimpleTimer();
 
 	// Precise location for fine movement
 	private double x;
@@ -75,6 +81,51 @@ public abstract class AnimatedActor extends Actor {
 		updateAnimationFrame();
 		timer.mark();
 		return true;
+	}
+
+	/**
+	 * Set this actor's lifespan.
+	 *
+	 * @param lifespan the number of milliseconds for this actor to exist before fading away
+	 */
+	protected void setLifespan(int lifespan) {
+		this.lifespan = lifespan;
+		willFade = true;
+	}
+
+	/**
+	 * Start fading away this actor now.
+	 */
+	protected void fadeAway() {
+		lifespan = 0;
+		willFade = true;
+	}
+
+	/**
+	 * Start timing this actor's life.
+	 */
+	protected void startLifespan() {
+		fadeTimer.mark();
+	}
+
+	/**
+	 * Fade this animated actor away and remove it after its lifespan has passed.
+	 */
+	protected void updateFade() {
+		if (!willFade || fadeTimer.millisElapsed() < lifespan) {
+			return;
+		}
+		// Gradually decrease the image 'transparency' (really opacity) before removing this actor
+		transparency -= FADE_INTERVAL;
+		if (transparency <= 0) {
+			// Remove this actor once it has become fully transparent
+			getWorld().removeObject(this);
+			return;
+		}
+		// Set the transparency on a copy of the original image so the change is not permanent
+		GreenfootImage image = new GreenfootImage(getImage());
+		image.setTransparency(transparency);
+		setImage(image);
 	}
 
 	/**

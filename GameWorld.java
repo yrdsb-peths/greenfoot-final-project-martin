@@ -23,6 +23,8 @@ public class GameWorld extends World {
 	private int score = 0;
 	private Label scoreLabel = new Label(score, 50);
 	private SimpleTimer timer = new SimpleTimer();
+	private SimpleTimer pauseTimer = new SimpleTimer();
+	private int pauseTime = 0;
 	private SimpleTimer sprayTimer = new SimpleTimer();
 	private SimpleTimer coinTimer = new SimpleTimer();
 	private Label timerLabel = new Label(0, 50);
@@ -169,7 +171,7 @@ public class GameWorld extends World {
 		}
 
 		// Draw time
-		int time = timer.millisElapsed();
+		int time = timer.millisElapsed() - pauseTime;
 		String minutes = String.valueOf(time / 60000);
 		String seconds = String.valueOf(time / 1000 % 60);
 		// Add leading zero if seconds is only one digit
@@ -195,6 +197,8 @@ public class GameWorld extends World {
 			addObject(darken, 0, 0);
 			addObject(pausedLabel, 300, 200);
 		}
+		// Keep track of how much time was spent paused
+		pauseTimer.mark();
 	}
 
 	/**
@@ -210,5 +214,7 @@ public class GameWorld extends World {
 			removeObject(darken);
 			removeObject(pausedLabel);
 		}
+		// Save the amount of time spent paused to subtract it from the timer
+		pauseTime += pauseTimer.millisElapsed();
 	}
 }

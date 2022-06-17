@@ -81,6 +81,8 @@ public class GameWorld extends World {
 		removeObject(coin);
 		score++;
 		scoreLabel.setValue(score);
+		// Stop the sound before playing in order to restart it if already playing
+		COIN_SOUND.stop();
 		COIN_SOUND.play();
 	}
 

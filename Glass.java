@@ -100,7 +100,7 @@ public class Glass extends AnimatedActor {
 				setLocation(getX(), getY() + DOWN_SPEED);
 				if (getY() >= targetY) {
 					// Kill the spider if it was under this glass
-					if (getOneObjectAtOffset(0, 70, Spider.class) != null) {
+					if (getOneObjectAtOffset(0, CAPTURE_OFFSET, Spider.class) != null) {
 						spider.die();
 					}
 					// Begin moving back to the position before capture

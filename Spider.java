@@ -221,7 +221,7 @@ public class Spider extends AnimatedActor {
 		// Add gravity to y velocity
 		velY++;
 		int y = getY() + velY;
-		if (y >= 450) {
+		if (y >= 1500) {
 			GameWorld world = (GameWorld) getWorld();
 			if (lives <= 0) {
 				// Out of lives, game is over
